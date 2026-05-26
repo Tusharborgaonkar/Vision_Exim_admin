@@ -605,25 +605,84 @@ include 'includes/header.php';
 		color: rgba(24, 24, 36, 0.72);
 	}
 
-	.featured-products-home .collections-card {
+	/* Featured Products — equal-height cards, aligned buttons */
+	.featured-products-section .row > [class*="col-"] {
+		display: flex;
+	}
+
+	.featured-products-section .collections-card {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
 		background: #fff;
-		padding: 18px 18px 28px;
+		padding: 18px 18px 24px;
 		border-radius: 24px;
 		box-shadow: 0 18px 38px rgba(24, 24, 36, 0.06);
-		height: 100%;
+		text-align: center;
 	}
 
-	.featured-products-home .collections-card h5 {
-		font-size: 24px;
-		margin-top: 24px;
+	.featured-products-section .collections-img {
+		flex-shrink: 0;
+		height: 220px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		margin-bottom: 8px;
+	}
+
+	.featured-products-section .collections-img img {
+		width: auto;
+		max-width: 100%;
+		max-height: 200px;
+		height: auto;
+		object-fit: contain;
+		position: relative;
+	}
+
+	.featured-products-section .collections-card-body {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-height: 0;
+		width: 100%;
+	}
+
+	.featured-products-section .collections-card h5 {
+		font-size: 22px;
+		margin-top: 12px;
 		margin-bottom: 10px;
+		flex-shrink: 0;
 	}
 
-	.featured-product-note {
+	.featured-products-section .featured-product-note {
+		flex: 1;
+		width: 100%;
+		min-height: 42px;
 		font-size: 14px;
 		font-weight: 600;
+		line-height: 1.45;
 		color: rgba(24, 24, 36, 0.68);
-		margin-bottom: 18px;
+		margin: 0 0 16px;
+	}
+
+	.featured-products-section .featured-product-note--empty {
+		visibility: hidden;
+		margin-bottom: 0;
+	}
+
+	.featured-products-section .collections-card-footer {
+		margin-top: auto;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding-top: 4px;
+	}
+
+	.featured-products-section .collections-card-footer .btn {
+		margin-top: 0;
 	}
 
 	.view-all-wrap {
@@ -1426,7 +1485,7 @@ include 'includes/header.php';
 			<span class="section-kicker" data-aos="fade-up">Handpicked Quality</span>
 			<h2 class="section-heading" data-aos="fade-up">Featured Products</h2>
 		</div>
-		<div class="row justify-content-center">
+		<div class="row justify-content-center align-items-stretch">
 			<?php if (empty($featured_products)): ?>
 			<div class="col-12 text-center py-4">
 				<p class="text-muted mb-0">No featured products yet. In admin, set status to <strong>Active</strong> and enable <strong>Featured Product</strong>.</p>
@@ -1438,22 +1497,29 @@ include 'includes/header.php';
 				$fp_name = $fp['name'];
 				$aos_delay = $i > 0 ? ' data-aos-delay="' . ($i * 100) . '"' : '';
 			?>
-			<div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up"<?= $aos_delay ?>>
+			<div class="col-lg-3 col-md-6 mb-4 d-flex" data-aos="fade-up"<?= $aos_delay ?>>
 				<div class="collections-card">
 					<div class="collections-img">
 						<img src="<?= htmlspecialchars($fp_img) ?>" alt="<?= htmlspecialchars($fp_name) ?>">
 					</div>
-					<h5><a href="<?= htmlspecialchars($fp_url) ?>"><?= htmlspecialchars($fp_name) ?></a></h5>
-					<?php if (!empty($fp['short_description'])): ?>
-					<p class="featured-product-note"><?= htmlspecialchars(strlen($fp['short_description']) > 90 ? substr($fp['short_description'], 0, 87) . '…' : $fp['short_description']) ?></p>
-					<?php endif; ?>
-					<a href="<?= htmlspecialchars($fp_url) ?>" class="btn">
-						VIEW Details
-						<svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M1 10.5203L6 6.02026L1 1.52026" stroke="currentColor" stroke-width="1.6"
-								stroke-linecap="round" stroke-linejoin="round"></path>
-						</svg>
-					</a>
+					<div class="collections-card-body">
+						<h5><a href="<?= htmlspecialchars($fp_url) ?>"><?= htmlspecialchars($fp_name) ?></a></h5>
+						<?php
+						$fp_desc = !empty($fp['short_description'])
+							? (strlen($fp['short_description']) > 90 ? substr($fp['short_description'], 0, 87) . '…' : $fp['short_description'])
+							: '';
+						?>
+						<p class="featured-product-note<?= $fp_desc === '' ? ' featured-product-note--empty' : '' ?>"><?= $fp_desc !== '' ? htmlspecialchars($fp_desc) : '&nbsp;' ?></p>
+						<div class="collections-card-footer">
+							<a href="<?= htmlspecialchars($fp_url) ?>" class="btn">
+								VIEW Details
+								<svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M1 10.5203L6 6.02026L1 1.52026" stroke="currentColor" stroke-width="1.6"
+										stroke-linecap="round" stroke-linejoin="round"></path>
+								</svg>
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 			<?php endforeach; ?>
