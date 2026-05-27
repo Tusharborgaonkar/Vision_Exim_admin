@@ -152,15 +152,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image_path = null;
     }
 
+    // Process Existing Gallery Images from Hidden Input
+    $existing_gallery = [];
+    if (isset($_POST['existing_gallery_json'])) {
+        $decoded = json_decode($_POST['existing_gallery_json'], true);
+        if (is_array($decoded)) {
+            $existing_gallery = $decoded;
+        }
+    }
+
+    // Process New Gallery Images Uploads
+    $new_gallery_paths = [];
+    if (empty($errors) && isset($_FILES['gallery_images'])) {
+        $files = $_FILES['gallery_images'];
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        $max_size = 3 * 1024 * 1024; // 3MB
+
+        if (isset($files['name'][0]) && !empty($files['name'][0])) {
+            $upload_dir = '../../../upload/products/';
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+
+            for ($i = 0; $i < count($files['name']); $i++) {
+                if ($files['error'][$i] !== UPLOAD_ERR_OK) {
+                    if ($files['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                        $errors[] = 'Gallery image ' . ($i + 1) . ' upload failed with error ' . $files['error'][$i];
+                    }
+                    continue;
+                }
+
+                if (!in_array($files['type'][$i], $allowed_types)) {
+                    $errors[] = 'Invalid file type for gallery image ' . ($i + 1) . '. Only JPG, PNG, WEBP are allowed.';
+                    continue;
+                }
+
+                if ($files['size'][$i] > $max_size) {
+                    $errors[] = 'Gallery image ' . ($i + 1) . ' exceeds 3MB limit.';
+                    continue;
+                }
+
+                $ext = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
+                $new_filename = uniqid('prod_gal_') . '.' . $ext;
+                $destination = $upload_dir . $new_filename;
+
+                if (move_uploaded_file($files['tmp_name'][$i], $destination)) {
+                    $new_gallery_paths[] = 'upload/products/' . $new_filename;
+                } else {
+                    $errors[] = 'Failed to save uploaded gallery image ' . ($i + 1);
+                }
+            }
+        }
+    }
+
+    // Combine existing kept gallery images and new uploaded ones
+    $final_gallery = array_merge($existing_gallery, $new_gallery_paths);
+    $gallery_json = !empty($final_gallery) ? json_encode($final_gallery) : null;
+
     // Update in DB
     if (empty($errors)) {
         $origin_country = 'India';
-        $stmt = $conn->prepare("UPDATE products SET name = ?, slug = ?, category_id = ?, hs_code = ?, short_description = ?, full_description = ?, moq = ?, packaging = ?, quality_standard = ?, origin_state = ?, origin_country = ?, image = ?, status = ?, sort_order = ?, is_featured = ?, seo_title = ?, seo_description = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE products SET name = ?, slug = ?, category_id = ?, hs_code = ?, short_description = ?, full_description = ?, moq = ?, packaging = ?, quality_standard = ?, origin_state = ?, origin_country = ?, image = ?, gallery_images = ?, status = ?, sort_order = ?, is_featured = ?, seo_title = ?, seo_description = ? WHERE id = ?");
         
         $stmt->bind_param('ssissssssssssiiisi', 
             $name, $slug, $category_id, $hs_code, $short_description, $full_description,
             $moq, $packaging, $quality_standard, $origin_state, $origin_country,
-            $image_path, $status, $sort_order, $is_featured, $seo_title, $seo_description, $id
+            $image_path, $gallery_json, $status, $sort_order, $is_featured, $seo_title, $seo_description, $id
         );
 
         if ($stmt->execute()) {
@@ -357,6 +414,54 @@ include '../../includes/navbar.php';
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Gallery Images Management -->
+                        <div class="border-t border-gray-100 dark:border-slate-700 pt-6 mt-6">
+                            <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Gallery Images</label>
+                            
+                            <!-- Existing Gallery Images -->
+                            <?php 
+                            $gallery_images = [];
+                            if (!empty($product['gallery_images'])) {
+                                $decoded = json_decode($product['gallery_images'], true);
+                                if (is_array($decoded)) {
+                                    $gallery_images = $decoded;
+                                }
+                            }
+                            ?>
+                            <?php if (!empty($gallery_images)): ?>
+                            <div class="grid grid-cols-4 gap-3 mb-4" id="existingGalleryContainer">
+                                <?php foreach ($gallery_images as $index => $img): ?>
+                                <div class="relative w-full h-16 rounded-xl overflow-hidden group border border-gray-200 dark:border-slate-700 shadow-sm" data-index="<?= $index ?>">
+                                    <img src="/vision_exim/<?= htmlspecialchars($img) ?>" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <button type="button" onclick="removeGalleryImage(<?= $index ?>, this)" class="w-6 h-6 rounded-lg bg-spice-chili-500 text-white hover:bg-spice-chili-600 flex items-center justify-center shadow animate-fade-in" title="Remove image">
+                                            <i class="fas fa-trash text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php endif; ?>
+                            
+                            <!-- Hidden inputs to track gallery images that are kept / removed -->
+                            <input type="hidden" name="existing_gallery_json" id="existingGalleryJson" value="<?= htmlspecialchars(json_encode($gallery_images)) ?>">
+
+                            <div class="flex items-center justify-center w-full">
+                                <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-slate-700/20 hover:bg-gray-100 dark:hover:bg-slate-700/30 transition-all group relative">
+                                    <div class="flex flex-col items-center justify-center pt-3 pb-3">
+                                        <div class="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-images text-sm"></i>
+                                        </div>
+                                        <p class="text-[11px] font-semibold text-spice-dark dark:text-slate-200">Upload more gallery images</p>
+                                        <p class="text-[9px] text-gray-400 dark:text-slate-500 mt-0.5">PNG, JPG, JPEG (Max. 3MB each)</p>
+                                    </div>
+                                    <input type="file" name="gallery_images[]" class="hidden" accept="image/*" multiple onchange="previewGalleryImages(this)" />
+                                </label>
+                            </div>
+                            <!-- Gallery Preview Container -->
+                            <div id="galleryPreview" class="grid grid-cols-4 gap-2 mt-4"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -500,6 +605,57 @@ function removeCurrentImage() {
         }
     }
     showToast('Image flagged for removal. Click Save Changes to confirm.', 'info');
+}
+
+function previewGalleryImages(input) {
+    const previewContainer = document.getElementById('galleryPreview');
+    previewContainer.innerHTML = '';
+    if (input.files) {
+        Array.from(input.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative w-full h-16 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm';
+                div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+                previewContainer.appendChild(div);
+            }
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
+function removeGalleryImage(index, btnElement) {
+    const existingInput = document.getElementById('existingGalleryJson');
+    let currentGallery = JSON.parse(existingInput.value || '[]');
+    
+    // Remove the image path from our array
+    if (index >= 0 && index < currentGallery.length) {
+        currentGallery.splice(index, 1);
+    }
+    
+    // Update the hidden input
+    existingInput.value = JSON.stringify(currentGallery);
+    
+    // Remove the thumbnail element from UI
+    const card = btnElement.closest('[data-index]');
+    if (card) {
+        card.remove();
+    }
+    
+    // Re-index remaining existing items in DOM so correct index is passed if deleted
+    const container = document.getElementById('existingGalleryContainer');
+    if (container) {
+        const remainingItems = container.querySelectorAll('[data-index]');
+        remainingItems.forEach((item, newIndex) => {
+            item.setAttribute('data-index', newIndex);
+            const btn = item.querySelector('button');
+            if (btn) {
+                btn.setAttribute('onclick', `removeGalleryImage(${newIndex}, this)`);
+            }
+        });
+    }
+    
+    showToast('Gallery image queued for removal.', 'info');
 }
 </script>
 

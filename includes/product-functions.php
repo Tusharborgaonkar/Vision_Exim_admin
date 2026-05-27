@@ -73,3 +73,27 @@ function ve_get_product_by_slug(string $slug): ?array
     $stmt->close();
     return $row ?: null;
 }
+
+/** @return array<int, array<string, mixed>> */
+function ve_get_products_by_category(int $category_id, int $limit = 3, int $exclude_id = 0): array
+{
+    $conn = ve_db();
+    $products = [];
+    $sql = "SELECT p.id, p.name, p.slug, p.short_description, p.image
+            FROM products p
+            WHERE p.category_id = ? AND p.status = 'active' AND p.id != ?
+            ORDER BY p.sort_order ASC, p.name ASC
+            LIMIT ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        return $products;
+    }
+    $stmt->bind_param('iii', $category_id, $exclude_id, $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+    $stmt->close();
+    return $products;
+}

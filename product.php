@@ -61,49 +61,163 @@ include 'includes/navbar.php';
 
 <section class="product-details-section bg-white">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-12" data-aos="fade-right">
+        <div class="row gy-5">
+            <!-- Product Image Column -->
+            <div class="col-lg-5 col-md-12" data-aos="fade-right">
                 <div class="product-detail-img">
                     <div class="product-detail-img-inner">
-                        <img src="<?= htmlspecialchars($product_image) ?>" alt="<?= htmlspecialchars($product_name) ?>">
+                        <img src="<?= htmlspecialchars($product_image) ?>" alt="<?= htmlspecialchars($product_name) ?>" class="img-fluid" id="mainProductImg">
+                    </div>
+                    <!-- Thumbnail Gallery — inside sticky wrapper so it stays with the main image -->
+                    <?php 
+                    $gallery = [];
+                    if (!empty($product['gallery_images'])) {
+                        $decoded = json_decode($product['gallery_images'], true);
+                        if (is_array($decoded)) {
+                            $gallery = $decoded;
+                        } else {
+                            $gallery = array_filter(array_map('trim', explode(',', $product['gallery_images'])));
+                        }
+                    }
+                    
+                    // Fallback: repeat the main image 3 times to populate the gallery boxes
+                    if (empty($gallery)) {
+                        $gallery = [$product_image, $product_image, $product_image];
+                    } else {
+                        // Prepend main image to gallery if not already present
+                        $main_relative = !empty($product['image']) ? $product['image'] : '';
+                        if (!empty($main_relative) && !in_array($main_relative, $gallery)) {
+                            array_unshift($gallery, $main_relative);
+                        }
+                    }
+                    ?>
+                    <div class="product-gallery-thumbs mt-3">
+                        <?php foreach ($gallery as $index => $img): 
+                            $img_url = (strpos($img, 'http') === 0 || strpos($img, '/') === 0) ? $img : ve_product_image_url($img);
+                            $active_class = ($index === 0) ? 'active' : '';
+                        ?>
+                        <img src="<?= htmlspecialchars($img_url) ?>" alt="Product thumbnail" class="img-thumbnail cursor-pointer <?= $active_class ?>" onclick="switchMainImage(this, '<?= htmlspecialchars($img_url) ?>')">
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-12" data-aos="fade-left">
-                <div class="title">
-                    <h2><?php include __DIR__ . '/includes/product-butterfly-svg.php'; ?> <?= htmlspecialchars($product_name) ?></h2>
+            
+            <!-- Product Details Column -->
+            <div class="col-lg-7 col-md-12" data-aos="fade-left">
+                <!-- Product Title -->
+                <div class="product-detail-header mb-4">
+                    <h1 class="product-title"><?= htmlspecialchars($product_name) ?></h1>
                 </div>
-                <div class="product-detail-btn">
-                    <a class="btn mail-btn" href="#InqueryModal" data-bs-toggle="modal">Inquire Via Mail</a>
-                    <a class="btn whatsApp-btn" href="https://wa.me/+919737075734?text=<?= $wa_text ?>">Inquiry Via WhatsApp</a>
+                
+                <!-- Product Details Table -->
+                <div class="product-attributes mb-4">
+                    <table class="table table-borderless product-details-table">
+                        <tbody>
+                            <tr>
+                                <td class="attr-label">Product:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product_name) ?></td>
+                            </tr>
+                            <?php if (!empty($product['origin_country'])): ?>
+                            <tr>
+                                <td class="attr-label">Origin:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product['origin_country']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php if (!empty($product['origin_state'])): ?>
+                            <tr>
+                                <td class="attr-label">Harvesting Season:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product['origin_state']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php if (!empty($product['quality_standard'])): ?>
+                            <tr>
+                                <td class="attr-label">Quality:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product['quality_standard']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php if (!empty($product['moq'])): ?>
+                            <tr>
+                                <td class="attr-label">Purity:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product['moq']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <tr>
+                                <td class="attr-label">GMO Status:</td>
+                                <td class="attr-value">Non-GMO</td>
+                            </tr>
+                            <?php if (!empty($product['packaging'])): ?>
+                            <tr>
+                                <td class="attr-label">Packaging:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product['packaging']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php if (!empty($product['hs_code'])): ?>
+                            <tr>
+                                <td class="attr-label">HS Code:</td>
+                                <td class="attr-value"><?= htmlspecialchars($product['hs_code']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="product-detail-content">
-                    <?php if (!empty($product['short_description'])): ?>
-                    <p class="fw-semibold"><?= nl2br(htmlspecialchars($product['short_description'])) ?></p>
-                    <?php endif; ?>
-                    <?php if (!empty($description)): ?>
-                    <p><?= nl2br(htmlspecialchars($description)) ?></p>
-                    <?php endif; ?>
-                    <ul class="list-unstyled mt-4 mb-0">
-                        <?php if (!empty($product['hs_code'])): ?>
-                        <li class="mb-2"><strong>HS Code:</strong> <?= htmlspecialchars($product['hs_code']) ?></li>
+                
+                <!-- Enquiry Button -->
+                <div class="product-enquiry-btn mb-4">
+                    <button class="btn btn-enquiry" data-bs-toggle="modal" href="#InqueryModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="12" rx="2" ry="2"></rect>
+                            <path d="M16 21H8a2 2 0 01-2-2V7m18 0V9a2 2 0 01-2 2M2 9a2 2 0 012-2h16a2 2 0 012 2"></path>
+                        </svg>
+                        Product Enquiry
+                    </button>
+                </div>
+                
+                <!-- Short Description -->
+                <?php if (!empty($product['short_description'])): ?>
+                <div class="product-short-desc mb-4">
+                    <p class="fw-semibold text-muted"><?= nl2br(htmlspecialchars($product['short_description'])) ?></p>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <!-- Full Description Section -->
+        <?php if (!empty($description)): ?>
+        <div class="row mt-5 pt-5 border-top">
+            <div class="col-lg-8">
+                <h3 class="mb-4">Product Description</h3>
+                <div class="product-full-description">
+                    <?= nl2br(htmlspecialchars($description)) ?>
+                </div>
+            </div>
+            
+            <!-- Related Products Sidebar -->
+            <div class="col-lg-4 ps-lg-4">
+                <div class="related-products-section">
+                    <h4 class="related-products-title mb-4">Related Products</h4>
+                    <div class="related-products-list">
+                        <?php 
+                        // Get other products from same category
+                        $related = ve_get_products_by_category($product['category_id'], 7, $product['id']);
+                        if (!empty($related)):
+                            foreach ($related as $rel):
+                                $rel_url = ve_product_url($rel['slug']);
+                        ?>
+                        <a href="<?= htmlspecialchars($rel_url) ?>" class="related-product-item">
+                            <span class="related-product-arrow">&gt;</span>
+                            <span class="related-product-name"><?= htmlspecialchars($rel['name']) ?></span>
+                        </a>
+                        <?php 
+                            endforeach;
+                        else:
+                        ?>
+                        <p class="text-muted small">No related products available.</p>
                         <?php endif; ?>
-                        <?php if (!empty($product['moq'])): ?>
-                        <li class="mb-2"><strong>MOQ:</strong> <?= htmlspecialchars($product['moq']) ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($product['packaging'])): ?>
-                        <li class="mb-2"><strong>Packaging:</strong> <?= htmlspecialchars($product['packaging']) ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($product['quality_standard'])): ?>
-                        <li class="mb-2"><strong>Quality:</strong> <?= htmlspecialchars($product['quality_standard']) ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($product['origin_state'])): ?>
-                        <li class="mb-2"><strong>Origin:</strong> <?= htmlspecialchars($product['origin_state']) ?><?= !empty($product['origin_country']) ? ', ' . htmlspecialchars($product['origin_country']) : '' ?></li>
-                        <?php endif; ?>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -114,7 +228,7 @@ include 'includes/navbar.php';
                 <input type="hidden" name="sendEmail" value="ok" />
                 <input type="hidden" name="productname" value="<?= htmlspecialchars($product_name) ?>">
                 <div class="inquiry_heading">
-                    <h2>Inquiry Now</h2>
+                    <h2>Product Enquiry</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="emailMsg"></div>
@@ -133,5 +247,22 @@ include 'includes/navbar.php';
 <div class="logo_shapewrp">
     <img src="https://morisoverseas.com/images/bottom-shape.png" alt="" class="d-block min-vw-100">
 </div>
+
+<script>
+function switchMainImage(thumbElement, imageUrl) {
+    const mainImg = document.getElementById('mainProductImg');
+    if (mainImg) {
+        mainImg.src = imageUrl;
+    }
+    // Remove active class from all sibling thumbnails
+    const container = thumbElement.parentElement;
+    if (container) {
+        const thumbs = container.querySelectorAll('.img-thumbnail');
+        thumbs.forEach(t => t.classList.remove('active'));
+    }
+    // Add active class to clicked thumbnail
+    thumbElement.classList.add('active');
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>

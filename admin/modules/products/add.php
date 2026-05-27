@@ -121,15 +121,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    // Process Gallery Images
+    $gallery_paths = [];
+    if (empty($errors) && isset($_FILES['gallery_images'])) {
+        $files = $_FILES['gallery_images'];
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        $max_size = 3 * 1024 * 1024; // 3MB
+
+        if (isset($files['name'][0]) && !empty($files['name'][0])) {
+            $upload_dir = '../../../upload/products/';
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+
+            for ($i = 0; $i < count($files['name']); $i++) {
+                if ($files['error'][$i] !== UPLOAD_ERR_OK) {
+                    if ($files['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                        $errors[] = 'Gallery image ' . ($i + 1) . ' upload failed with error ' . $files['error'][$i];
+                    }
+                    continue;
+                }
+
+                if (!in_array($files['type'][$i], $allowed_types)) {
+                    $errors[] = 'Invalid file type for gallery image ' . ($i + 1) . '. Only JPG, PNG, WEBP are allowed.';
+                    continue;
+                }
+
+                if ($files['size'][$i] > $max_size) {
+                    $errors[] = 'Gallery image ' . ($i + 1) . ' exceeds 3MB limit.';
+                    continue;
+                }
+
+                $ext = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
+                $new_filename = uniqid('prod_gal_') . '.' . $ext;
+                $destination = $upload_dir . $new_filename;
+
+                if (move_uploaded_file($files['tmp_name'][$i], $destination)) {
+                    $gallery_paths[] = 'upload/products/' . $new_filename;
+                } else {
+                    $errors[] = 'Failed to save uploaded gallery image ' . ($i + 1);
+                }
+            }
+        }
+    }
+
     // Insert to DB
     if (empty($errors)) {
         $origin_country = 'India';
-        $stmt = $conn->prepare("INSERT INTO products (name, slug, category_id, hs_code, short_description, full_description, moq, packaging, quality_standard, origin_state, origin_country, image, status, sort_order, is_featured, seo_title, seo_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $gallery_json = !empty($gallery_paths) ? json_encode($gallery_paths) : null;
+        $stmt = $conn->prepare("INSERT INTO products (name, slug, category_id, hs_code, short_description, full_description, moq, packaging, quality_standard, origin_state, origin_country, image, gallery_images, status, sort_order, is_featured, seo_title, seo_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt->bind_param('ssissssssssssiiis', 
+        $stmt->bind_param('ssissssssssssiiiss', 
             $name, $slug, $category_id, $hs_code, $short_description, $full_description,
             $moq, $packaging, $quality_standard, $origin_state, $origin_country,
-            $image_path, $status, $sort_order, $is_featured, $seo_title, $seo_description
+            $image_path, $gallery_json, $status, $sort_order, $is_featured, $seo_title, $seo_description
         );
 
         if ($stmt->execute()) {
@@ -327,6 +372,25 @@ include '../../includes/navbar.php';
                                 </label>
                             </div>
                         </div>
+
+                        <!-- Gallery Images Upload -->
+                        <div class="border-t border-gray-100 dark:border-slate-700 pt-6">
+                            <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Gallery Images</label>
+                            <div class="flex items-center justify-center w-full">
+                                <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-slate-700/20 hover:bg-gray-100 dark:hover:bg-slate-700/30 transition-all group relative">
+                                    <div class="flex flex-col items-center justify-center pt-4 pb-4">
+                                        <div class="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-images text-sm"></i>
+                                        </div>
+                                        <p class="text-[11px] font-semibold text-spice-dark dark:text-slate-200">Upload multiple gallery images</p>
+                                        <p class="text-[9px] text-gray-400 dark:text-slate-500 mt-1">PNG, JPG, JPEG (Max. 3MB each)</p>
+                                    </div>
+                                    <input type="file" name="gallery_images[]" class="hidden" accept="image/*" multiple onchange="previewGalleryImages(this)" />
+                                </label>
+                            </div>
+                            <!-- Gallery Preview Container -->
+                            <div id="galleryPreview" class="grid grid-cols-4 gap-2 mt-4"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -444,6 +508,23 @@ function previewImage(input) {
             document.getElementById('uploadLabel').classList.add('opacity-0');
         }
         reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewGalleryImages(input) {
+    const previewContainer = document.getElementById('galleryPreview');
+    previewContainer.innerHTML = '';
+    if (input.files) {
+        Array.from(input.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative w-full h-16 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm';
+                div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+                previewContainer.appendChild(div);
+            }
+            reader.readAsDataURL(file);
+        });
     }
 }
 </script>
