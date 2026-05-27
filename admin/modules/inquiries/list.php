@@ -201,9 +201,6 @@ include '../../includes/navbar.php';
                     <thead>
                         <tr class="bg-gray-50/80 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700">
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider ps-6">Buyer / Company</th>
-                            <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Country</th>
-                            <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Requested Product</th>
-                            <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Quantity</th>
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Date</th>
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Status</th>
                             <th class="px-5 py-4 text-center text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Actions</th>
@@ -242,16 +239,6 @@ include '../../includes/navbar.php';
                                     <p class="text-[10px] text-gray-400 dark:text-slate-500"><?= htmlspecialchars($row['email']) ?><?= !empty($row['phone']) ? ' • ' . htmlspecialchars($row['phone']) : '' ?></p>
                                 </div>
                             </td>
-                            <td class="px-5 py-4">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-[14px]"><?= htmlspecialchars($row['country_flag']) ?></span>
-                                    <span class="text-[12px] text-gray-600 dark:text-slate-400"><?= !empty($row['city']) ? htmlspecialchars($row['city']) . ', ' : '' ?><?= htmlspecialchars($row['country_name']) ?></span>
-                                </div>
-                            </td>
-                            <td class="px-5 py-4">
-                                <span class="inline-flex px-2.5 py-1 rounded-lg bg-spice-turmeric-50 dark:bg-spice-turmeric-900/20 text-spice-turmeric-600 dark:text-spice-turmeric-400 text-[11px] font-medium"><?= htmlspecialchars($row['requested_product']) ?></span>
-                            </td>
-                            <td class="px-5 py-4 text-[12px] text-gray-600 dark:text-slate-400 font-semibold"><?= htmlspecialchars($row['quantity']) ?></td>
                             <td class="px-5 py-4 text-[12px] text-gray-600 dark:text-slate-400"><?= date('M d, Y', strtotime($row['created_at'])) ?></td>
                             <td class="px-5 py-4">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold <?= $status_class ?>">

@@ -46,10 +46,10 @@
 
             <!-- Notifications -->
             <div class="relative">
-                <button onclick="toggleNotifications()" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors relative">
+                <!-- <button onclick="toggleNotifications()" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors relative">
                     <i class="fas fa-bell text-sm"></i>
                     <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-spice-chili-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
-                </button>
+                </button> -->
 
                 <!-- Notification Dropdown -->
                 <div id="notificationDropdown" class="absolute right-0 top-[calc(100%+8px)] w-[360px] bg-white dark:bg-slate-800 rounded-2xl shadow-dropdown border border-gray-100 dark:border-slate-700 hidden z-50">
@@ -124,12 +124,12 @@
                         <p class="text-[11px] text-gray-400 dark:text-slate-500"><?= htmlspecialchars(isset($_SESSION['admin_user_email']) ? $_SESSION['admin_user_email'] : 'admin@visionexim.com') ?></p>
                     </div>
                     <div class="py-2">
-                        <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                        <a href="/vision_exim/admin/profile.php" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                             <i class="fas fa-user-circle text-gray-400 dark:text-slate-500 w-4"></i> My Profile
                         </a>
-                        <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                        <!-- <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                             <i class="fas fa-question-circle text-gray-400 dark:text-slate-500 w-4"></i> Help Center
-                        </a>
+                        </a> -->
                     </div>
                     <div class="border-t border-gray-100 dark:border-slate-700 py-2">
                         <a href="/vision_exim/admin/logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-spice-chili-500 hover:bg-spice-chili-50 dark:hover:bg-spice-chili-900/20 transition-colors">

@@ -171,10 +171,6 @@ include '../../includes/navbar.php';
                             <p class="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wider font-semibold">Phone / WhatsApp</p>
                             <p class="text-[13px] font-semibold text-spice-dark dark:text-white mt-1"><?= htmlspecialchars($inq['phone'] ?? '—') ?></p>
                         </div>
-                        <div class="sm:col-span-2">
-                            <p class="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wider font-semibold">Country & Region</p>
-                            <p class="text-[13px] font-semibold text-spice-dark dark:text-white mt-1"><?= htmlspecialchars($inq['city']) ?>, <?= htmlspecialchars($inq['country_name']) ?></p>
-                        </div>
                     </div>
                 </div>
 
@@ -188,7 +184,7 @@ include '../../includes/navbar.php';
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
+                        <div class="sm:col-span-2">
                             <p class="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wider font-semibold">Requested Product</p>
                             <div class="flex items-center gap-2.5 mt-1.5">
                                 <span class="w-6 h-6 rounded bg-spice-turmeric-50 dark:bg-spice-turmeric-900/30 flex items-center justify-center text-spice-turmeric-500 text-xs">
@@ -196,10 +192,6 @@ include '../../includes/navbar.php';
                                 </span>
                                 <span class="text-[13px] font-semibold text-spice-dark dark:text-white"><?= htmlspecialchars($inq['requested_product']) ?></span>
                             </div>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wider font-semibold">Required Quantity</p>
-                            <p class="text-[14px] font-bold text-spice-green-600 mt-1"><?= htmlspecialchars($inq['quantity']) ?></p>
                         </div>
                         <div class="sm:col-span-2">
                             <p class="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wider font-semibold mb-2">Original Message</p>
@@ -211,7 +203,7 @@ include '../../includes/navbar.php';
                 </div>
 
                 <!-- Email Responder Form -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-card border border-gray-100/50 dark:border-slate-700 p-6">
+                <!-- <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-card border border-gray-100/50 dark:border-slate-700 p-6">
                     <div class="flex items-center gap-3 border-b border-gray-100 dark:border-slate-700 pb-4 mb-6">
                         <div class="w-8 h-8 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center text-blue-500">
                             <i class="fas fa-reply text-sm"></i>
@@ -261,7 +253,7 @@ Vision Exim Export Team</textarea>
                             </button>
                         </div>
                     </form>
-                </div>
+                </div> -->
 
             </div>
 

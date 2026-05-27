@@ -97,7 +97,7 @@
 
     <!-- Sidebar Footer - Admin Profile -->
     <div class="border-t border-white/10 px-4 py-4">
-        <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-white/12 transition-colors cursor-pointer group">
+        <a href="/vision_exim/admin/profile.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-white/12 transition-colors mb-2">
             <div class="w-9 h-9 rounded-full bg-spice-turmeric-500 flex items-center justify-center text-white font-bold text-sm">
                 VE
             </div>
@@ -105,7 +105,13 @@
                 <p class="text-white text-[12px] font-semibold truncate">Vision Exim</p>
                 <p class="text-white/40 text-[10px] truncate">Super Admin</p>
             </div>
-            <i class="fas fa-right-from-bracket text-white/40 group-hover:text-spice-chili-400 text-xs transition-colors"></i>
-        </div>
+            <i class="fas fa-user-pen text-white/40 text-xs"></i>
+        </a>
+        <a href="/vision_exim/admin/logout.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-spice-chili-500/30 transition-colors group w-full">
+            <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
+                <i class="fas fa-right-from-bracket text-white/60 group-hover:text-spice-chili-400 text-sm transition-colors"></i>
+            </div>
+            <span class="text-white/60 group-hover:text-white text-[12px] font-semibold transition-colors">Sign Out</span>
+        </a>
     </div>
 </aside>

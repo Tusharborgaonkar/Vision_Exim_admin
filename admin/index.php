@@ -146,7 +146,7 @@ $saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['re
                 </p>
 
                 <!-- Feature Pills -->
-                <div class="flex flex-wrap justify-center gap-3">
+                <!-- <div class="flex flex-wrap justify-center gap-3">
                     <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
                         <i class="fas fa-globe-americas text-spice-turmeric-400 text-xs"></i>
                         <span class="text-white/60 text-[11px] font-medium">Global Export</span>
@@ -159,10 +159,10 @@ $saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['re
                         <i class="fas fa-shield-halved text-spice-chili-500 text-xs"></i>
                         <span class="text-white/60 text-[11px] font-medium">Secure</span>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Trust Indicators -->
-                <div class="mt-14 flex items-center justify-center gap-8">
+                <!-- <div class="mt-14 flex items-center justify-center gap-8">
                     <div class="text-center">
                         <p class="text-white text-2xl font-bold">50+</p>
                         <p class="text-white/30 text-[10px] uppercase tracking-wider">Products</p>
@@ -177,7 +177,7 @@ $saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['re
                         <p class="text-white text-2xl font-bold">100%</p>
                         <p class="text-white/30 text-[10px] uppercase tracking-wider">Organic</p>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 

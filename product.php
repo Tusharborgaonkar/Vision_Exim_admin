@@ -68,37 +68,36 @@ include 'includes/navbar.php';
                     <div class="product-detail-img-inner">
                         <img src="<?= htmlspecialchars($product_image) ?>" alt="<?= htmlspecialchars($product_name) ?>" class="img-fluid" id="mainProductImg">
                     </div>
-                    <!-- Thumbnail Gallery — inside sticky wrapper so it stays with the main image -->
                     <?php 
                     $gallery = [];
+
+                    // Always start with the main image
+                    if (!empty($product['image'])) {
+                        $gallery[] = ve_product_image_url($product['image']);
+                    }
+
+                    // Add real gallery images from DB
                     if (!empty($product['gallery_images'])) {
                         $decoded = json_decode($product['gallery_images'], true);
                         if (is_array($decoded)) {
-                            $gallery = $decoded;
-                        } else {
-                            $gallery = array_filter(array_map('trim', explode(',', $product['gallery_images'])));
-                        }
-                    }
-                    
-                    // Fallback: repeat the main image 3 times to populate the gallery boxes
-                    if (empty($gallery)) {
-                        $gallery = [$product_image, $product_image, $product_image];
-                    } else {
-                        // Prepend main image to gallery if not already present
-                        $main_relative = !empty($product['image']) ? $product['image'] : '';
-                        if (!empty($main_relative) && !in_array($main_relative, $gallery)) {
-                            array_unshift($gallery, $main_relative);
+                            foreach ($decoded as $g) {
+                                $g_url = ve_product_image_url($g);
+                                if (!in_array($g_url, $gallery)) {
+                                    $gallery[] = $g_url;
+                                }
+                            }
                         }
                     }
                     ?>
+                    <?php if (count($gallery) > 1): ?>
                     <div class="product-gallery-thumbs mt-3">
-                        <?php foreach ($gallery as $index => $img): 
-                            $img_url = (strpos($img, 'http') === 0 || strpos($img, '/') === 0) ? $img : ve_product_image_url($img);
+                        <?php foreach ($gallery as $index => $img_url): 
                             $active_class = ($index === 0) ? 'active' : '';
                         ?>
                         <img src="<?= htmlspecialchars($img_url) ?>" alt="Product thumbnail" class="img-thumbnail cursor-pointer <?= $active_class ?>" onclick="switchMainImage(this, '<?= htmlspecialchars($img_url) ?>')">
                         <?php endforeach; ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
             
