@@ -167,16 +167,25 @@
 					<?php
 				// Dynamic: fetch from database
 				require_once 'admin/includes/db.php';
+				$conn->query("ALTER TABLE harvest_calendar ADD COLUMN IF NOT EXISTS image VARCHAR(255) DEFAULT NULL");
 				$month_cols = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec_month'];
 				$harvest_result = $conn->query("SELECT * FROM harvest_calendar ORDER BY sort_order ASC, spice_name ASC");
 				
 				if ($harvest_result && $harvest_result->num_rows > 0) {
 					while ($row = $harvest_result->fetch_assoc()) {
+						$img = !empty($row['image']) ? '/vision_exim/' . htmlspecialchars($row['image']) : null;
 						echo "<tr>";
-						echo "<td class='spice-name'>" . htmlspecialchars($row['spice_name']) . "</td>";
+						echo "<td class='spice-name'><div style='display:flex;align-items:center;gap:10px;'>";
+						if ($img) echo "<img src='$img' alt='" . htmlspecialchars($row['spice_name']) . "' style='width:38px;height:38px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid #eee;'>";
+						echo "<span>" . htmlspecialchars($row['spice_name']) . "</span></div></td>";
 						foreach ($month_cols as $col) {
-							$active_class = ((int)$row[$col] > 0) ? 'active' : '';
-							echo "<td class='month-cell'><span class='harvest-status $active_class'></span></td>";
+							if ((int)$row[$col] > 0 && $img) {
+								echo "<td class='month-cell'><img src='$img' alt='' style='width:34px;height:34px;border-radius:6px;object-fit:cover;margin:auto;display:block;'></td>";
+							} elseif ((int)$row[$col] > 0) {
+								echo "<td class='month-cell'><span class='harvest-status active'></span></td>";
+							} else {
+								echo "<td class='month-cell'><span style='display:block;width:34px;height:34px;margin:auto;'></span></td>";
+							}
 						}
 						echo "</tr>";
 					}

@@ -172,14 +172,6 @@ include '../../includes/navbar.php';
                     <option value="replied" <?= $status_filter === 'replied' ? 'selected' : '' ?>>Replied</option>
                     <option value="closed" <?= $status_filter === 'closed' ? 'selected' : '' ?>>Closed</option>
                 </select>
-                <!-- Source Filter -->
-                <select name="source" class="px-4 py-3 rounded-xl border-2 border-gray-100 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-700/50 text-[12px] text-gray-600 dark:text-slate-300 outline-none focus:border-spice-green-600 cursor-pointer min-w-[130px]">
-                    <option value="">All Sources</option>
-                    <option value="website" <?= $source_filter === 'website' ? 'selected' : '' ?>>Website Form</option>
-                    <option value="whatsapp" <?= $source_filter === 'whatsapp' ? 'selected' : '' ?>>WhatsApp</option>
-                    <option value="email" <?= $source_filter === 'email' ? 'selected' : '' ?>>Email</option>
-                    <option value="direct" <?= $source_filter === 'direct' ? 'selected' : '' ?>>Direct Call</option>
-                </select>
                 
                 <button type="submit" class="px-5 py-3 rounded-xl bg-spice-green-600 hover:bg-spice-green-700 text-white text-[12px] font-semibold transition-colors">
                     Filter
@@ -213,7 +205,6 @@ include '../../includes/navbar.php';
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Requested Product</th>
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Quantity</th>
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Date</th>
-                            <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Source</th>
                             <th class="px-5 py-4 text-left text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Status</th>
                             <th class="px-5 py-4 text-center text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Actions</th>
                         </tr>
@@ -242,14 +233,19 @@ include '../../includes/navbar.php';
                         <tr class="hover:bg-gray-50/60 dark:hover:bg-slate-700/30 transition-colors" id="row-<?= $row['id'] ?>">
                             <td class="px-5 py-4 ps-6">
                                 <div>
-                                    <p class="text-[13px] font-semibold text-spice-dark dark:text-white"><?= htmlspecialchars($row['company_name']) ?></p>
-                                    <p class="text-[10px] text-gray-400 dark:text-slate-500"><?= htmlspecialchars($row['contact_name']) ?> • <?= htmlspecialchars($row['email']) ?> • <?= htmlspecialchars($row['phone']) ?></p>
+                                    <p class="text-[13px] font-semibold text-spice-dark dark:text-white">
+                                        <?= htmlspecialchars(!empty($row['contact_name']) ? $row['contact_name'] : $row['company_name']) ?>
+                                    </p>
+                                    <?php if (!empty($row['company_name'])): ?>
+                                    <p class="text-[11px] text-gray-500 dark:text-slate-400 font-medium"><?= htmlspecialchars($row['company_name']) ?></p>
+                                    <?php endif; ?>
+                                    <p class="text-[10px] text-gray-400 dark:text-slate-500"><?= htmlspecialchars($row['email']) ?><?= !empty($row['phone']) ? ' • ' . htmlspecialchars($row['phone']) : '' ?></p>
                                 </div>
                             </td>
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-1.5">
                                     <span class="text-[14px]"><?= htmlspecialchars($row['country_flag']) ?></span>
-                                    <span class="text-[12px] text-gray-600 dark:text-slate-400"><?= htmlspecialchars($row['city']) ?>, <?= htmlspecialchars($row['country_name']) ?></span>
+                                    <span class="text-[12px] text-gray-600 dark:text-slate-400"><?= !empty($row['city']) ? htmlspecialchars($row['city']) . ', ' : '' ?><?= htmlspecialchars($row['country_name']) ?></span>
                                 </div>
                             </td>
                             <td class="px-5 py-4">
@@ -257,11 +253,6 @@ include '../../includes/navbar.php';
                             </td>
                             <td class="px-5 py-4 text-[12px] text-gray-600 dark:text-slate-400 font-semibold"><?= htmlspecialchars($row['quantity']) ?></td>
                             <td class="px-5 py-4 text-[12px] text-gray-600 dark:text-slate-400"><?= date('M d, Y', strtotime($row['created_at'])) ?></td>
-                            <td class="px-5 py-4 text-center">
-                                <span class="<?= $source_icon ?>" title="Source: <?= ucfirst(htmlspecialchars($row['source'])) ?>">
-                                    <i class="fas <?= $source_icon ?>"></i>
-                                </span>
-                            </td>
                             <td class="px-5 py-4">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold <?= $status_class ?>">
                                     <span class="w-1.5 h-1.5 rounded-full <?= $row['status'] === 'new' ? 'bg-emerald-500 animate-pulse' : ($row['status'] === 'progress' ? 'bg-spice-turmeric-500' : ($row['status'] === 'replied' ? 'bg-blue-500' : 'bg-gray-400')) ?>"></span>
@@ -278,7 +269,7 @@ include '../../includes/navbar.php';
                                         <i class="fab fa-whatsapp text-xs"></i>
                                     </a>
                                     <?php endif; ?>
-                                    <button onclick="deleteInquiry(<?= $row['id'] ?>, '<?= htmlspecialchars($row['company_name'], ENT_QUOTES) ?>')" class="w-8 h-8 rounded-lg bg-spice-chili-50 dark:bg-spice-chili-900/20 flex items-center justify-center text-spice-chili-500 hover:bg-spice-chili-100 dark:hover:bg-spice-chili-900/40 transition-colors" title="Delete">
+                                    <button onclick="deleteInquiry(<?= $row['id'] ?>, '<?= htmlspecialchars(!empty($row['company_name']) ? $row['company_name'] : $row['contact_name'], ENT_QUOTES) ?>')" class="w-8 h-8 rounded-lg bg-spice-chili-50 dark:bg-spice-chili-900/20 flex items-center justify-center text-spice-chili-500 hover:bg-spice-chili-100 dark:hover:bg-spice-chili-900/40 transition-colors" title="Delete">
                                         <i class="fas fa-trash text-[10px]"></i>
                                     </button>
                                 </div>

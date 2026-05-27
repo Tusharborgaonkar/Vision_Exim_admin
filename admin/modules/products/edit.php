@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $origin_country = 'India';
         $stmt = $conn->prepare("UPDATE products SET name = ?, slug = ?, category_id = ?, hs_code = ?, short_description = ?, full_description = ?, moq = ?, packaging = ?, quality_standard = ?, origin_state = ?, origin_country = ?, image = ?, gallery_images = ?, status = ?, sort_order = ?, is_featured = ?, seo_title = ?, seo_description = ? WHERE id = ?");
         
-        $stmt->bind_param('ssissssssssssiiisi', 
+        $stmt->bind_param('ssisssssssssssiissi', 
             $name, $slug, $category_id, $hs_code, $short_description, $full_description,
             $moq, $packaging, $quality_standard, $origin_state, $origin_country,
             $image_path, $gallery_json, $status, $sort_order, $is_featured, $seo_title, $seo_description, $id

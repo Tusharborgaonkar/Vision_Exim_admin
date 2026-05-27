@@ -10,7 +10,9 @@ include '../../includes/db.php';
 $success_msg = isset($_GET['success']) ? htmlspecialchars($_GET['success']) : '';
 $error_msg   = isset($_GET['error'])   ? htmlspecialchars($_GET['error'])   : '';
 
-// Fetch all harvest records from database
+// Add image column if not exists
+$conn->query("ALTER TABLE harvest_calendar ADD COLUMN IF NOT EXISTS image VARCHAR(255) DEFAULT NULL");
+
 $harvest_data = [];
 $result = $conn->query("SELECT * FROM harvest_calendar ORDER BY sort_order ASC, spice_name ASC");
 if ($result) {
@@ -92,17 +94,30 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                     <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
                         <?php foreach ($harvest_data as $row): ?>
                         <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-700/30 transition-all group" id="row-<?= $row['id'] ?>">
-                            <!-- Spice Name -->
+                            <!-- Spice Name with Image -->
                             <td class="py-4 ps-4 align-middle">
-                                <span class="text-[13px] font-semibold text-spice-dark dark:text-white"><?= htmlspecialchars($row['spice_name']) ?></span>
+                                <div class="flex items-center gap-3">
+                                    <?php if (!empty($row['image'])): ?>
+                                    <img src="/vision_exim/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['spice_name']) ?>" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100 dark:border-slate-700">
+                                    <?php else: ?>
+                                    <div class="w-10 h-10 rounded-lg bg-spice-green-600/10 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-seedling text-spice-green-600 text-sm"></i>
+                                    </div>
+                                    <?php endif; ?>
+                                    <span class="text-[13px] font-semibold text-spice-dark dark:text-white"><?= htmlspecialchars($row['spice_name']) ?></span>
+                                </div>
                             </td>
                             <!-- 12 Months Indicators -->
-                            <?php foreach ($month_cols as $col): ?>
+                            <?php 
+                            $prod_img = !empty($row['image']) ? '/vision_exim/' . htmlspecialchars($row['image']) : null;
+                            foreach ($month_cols as $col): ?>
                             <td class="py-4 align-middle text-center px-1">
-                                <?php if ((int)$row[$col] > 0): ?>
-                                <span class="block mx-auto w-full max-w-[45px] h-3 bg-spice-green-600/90 dark:bg-emerald-500/80 rounded-full shadow-sm" title="Harvesting Period"></span>
+                                <?php if ((int)$row[$col] > 0 && $prod_img): ?>
+                                <img src="<?= $prod_img ?>" alt="" class="mx-auto rounded-md object-cover" style="width:36px;height:36px;" title="Harvesting Period">
+                                <?php elseif ((int)$row[$col] > 0): ?>
+                                <span class="block mx-auto w-9 h-3 bg-spice-green-600/90 rounded-full" title="Harvesting Period"></span>
                                 <?php else: ?>
-                                <span class="block mx-auto w-full max-w-[45px] h-3 bg-gray-100 dark:bg-slate-700 rounded-full" title="Off Season"></span>
+                                <span class="block mx-auto" style="width:36px;height:36px;"></span>
                                 <?php endif; ?>
                             </td>
                             <?php endforeach; ?>
@@ -131,12 +146,12 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
             <!-- Legend Section -->
             <div class="flex items-center justify-center gap-6 mt-6 border-t border-gray-100 dark:border-slate-700 pt-5 text-[12px]">
                 <div class="flex items-center gap-2">
-                    <span class="w-7 h-3.5 bg-spice-green-600 dark:bg-emerald-500 rounded-full"></span>
+                    <img src="/vision_exim/aaa.webp" class="w-7 h-7 rounded-md object-cover">
                     <span class="text-gray-500 dark:text-slate-400 font-medium">Harvesting Period</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="w-7 h-3.5 bg-gray-100 dark:bg-slate-700 rounded-full"></span>
-                    <span class="text-gray-500 dark:text-slate-400 font-medium">Off Season / Dormant</span>
+                    <span class="w-7 h-7 rounded-md bg-gray-100 dark:bg-slate-700 block"></span>
+                    <span class="text-gray-500 dark:text-slate-400 font-medium">Off Season</span>
                 </div>
             </div>
         </div>

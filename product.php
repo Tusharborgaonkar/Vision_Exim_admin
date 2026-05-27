@@ -224,17 +224,19 @@ include 'includes/navbar.php';
 <div class="modal fade inquery-modal" id="InqueryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form class="needs-validation" id="productenq_form" novalidate method="post">
-                <input type="hidden" name="sendEmail" value="ok" />
-                <input type="hidden" name="productname" value="<?= htmlspecialchars($product_name) ?>">
+            <form class="needs-validation" id="productenq_form" novalidate>
+                <input type="hidden" name="subject" value="<?= htmlspecialchars($product_name) ?>">
                 <div class="inquiry_heading">
                     <h2>Product Enquiry</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="emailMsg"></div>
                 <div class="form-feild"><input type="text" name="name" class="form-control" placeholder="Full Name*" required /></div>
+                <div class="form-feild"><input type="text" name="company" class="form-control" placeholder="Company Name" /></div>
                 <div class="form-feild"><input type="email" name="email" class="form-control" placeholder="Email Address*" required /></div>
-                <div class="form-feild"><input type="text" name="phone" class="form-control" placeholder="Phone Number" required /></div>
+                <div class="form-feild"><input type="text" name="phone" class="form-control" placeholder="Phone Number" /></div>
+                <div class="form-feild"><input type="text" name="country" class="form-control" placeholder="Country &amp; Region" /></div>
+                <div class="form-feild"><input type="text" name="quantity" class="form-control" placeholder="Quantity (e.g. 100 kg, 5 MT)" /></div>
                 <div class="form-feild"><textarea class="form-control" name="message" placeholder="Message"></textarea></div>
                 <div class="form-submit">
                     <button type="submit" class="btn" id="btn_submit"><span>Submit</span></button>
@@ -249,6 +251,51 @@ include 'includes/navbar.php';
 </div>
 
 <script>
+document.getElementById('productenq_form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form = this;
+    var btn = document.getElementById('btn_submit');
+    var msgDiv = document.getElementById('emailMsg');
+
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span>Sending...</span>';
+    msgDiv.innerHTML = '';
+
+    var data = new FormData(form);
+
+    fetch('/vision_exim/submit-inquiry.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(json) {
+        if (json.success) {
+            msgDiv.innerHTML = '<div style="color:#1a7a3c;background:#eafaf1;padding:10px 14px;border-radius:8px;margin-bottom:10px;font-size:14px;">✅ ' + json.message + '</div>';
+            form.reset();
+            form.classList.remove('was-validated');
+            setTimeout(function() {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('InqueryModal'));
+                if (modal) modal.hide();
+                msgDiv.innerHTML = '';
+            }, 2500);
+        } else {
+            msgDiv.innerHTML = '<div style="color:#c0191a;background:#fdf0f0;padding:10px 14px;border-radius:8px;margin-bottom:10px;font-size:14px;">❌ ' + json.message + '</div>';
+        }
+    })
+    .catch(function() {
+        msgDiv.innerHTML = '<div style="color:#c0191a;background:#fdf0f0;padding:10px 14px;border-radius:8px;margin-bottom:10px;font-size:14px;">❌ Server error. Please try again.</div>';
+    })
+    .finally(function() {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Submit</span>';
+    });
+});
+
 function switchMainImage(thumbElement, imageUrl) {
     const mainImg = document.getElementById('mainProductImg');
     if (mainImg) {
