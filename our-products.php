@@ -36,7 +36,7 @@ include 'includes/navbar.php';
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="/vision_exim/index.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a></li>
                 <li class="breadcrumb-item">Our Products</li>
             </ol>
         </nav>
@@ -54,8 +54,8 @@ include 'includes/navbar.php';
         <?php else: ?>
         <div class="product-box-wpr">
             <?php foreach ($categories as $i => $cat):
-                $cat_img = !empty($cat['image']) ? '/vision_exim/' . htmlspecialchars($cat['image']) : '/vision_exim/aaa.webp';
-                $cat_url = '/vision_exim/pure-ground-spices.php?category=' . urlencode($cat['slug']);
+                $cat_img = !empty($cat['image']) ? ve_url(ltrim((string)$cat['image'], '/')) : ve_url('aaa.webp');
+                $cat_url = ve_url('pure-ground-spices.php?category=' . urlencode((string)$cat['slug']));
                 $num     = str_pad($i + 1, 2, '0', STR_PAD_LEFT);
                 $is_even = ($i % 2 !== 0);
             ?>
@@ -77,7 +77,7 @@ include 'includes/navbar.php';
                     </div>
                     <div class="col-md-6 <?= $is_even ? 'order-md-1' : '' ?>">
                         <div class="product-img align-items-center <?= $is_even ? 'justify-content-start' : 'justify-content-end' ?> d-flex" data-aos="zoom-in">
-                            <img src="<?= $cat_img ?>" alt="<?= htmlspecialchars($cat['name']) ?>">
+                            <img src="<?= htmlspecialchars($cat_img) ?>" alt="<?= htmlspecialchars($cat['name']) ?>">
                         </div>
                     </div>
                 </div>

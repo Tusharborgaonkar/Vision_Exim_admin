@@ -1,10 +1,13 @@
-<?php $current_page = basename($_SERVER['PHP_SELF']); ?>
+<?php
+require_once __DIR__ . '/config.php';
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
 <header>
 	<div class="header-bottom">
 		<div class="header-main-bar">
 			<div class="header-logo">
-				<a href="/vision_exim/index.php" class="logo-wrapper">
-					<img src="images/certificates/vision logo color (1).png" alt="Vision Exim Logo" style="height: 45px; width: auto;">
+				<a href="<?= htmlspecialchars(ve_url('index.php')) ?>" class="logo-wrapper">
+					<img src="<?= htmlspecialchars(ve_url('images/certificates/vision logo color (1).png')) ?>" alt="Vision Exim Logo" style="height: 45px; width: auto;">
 				</a>
 			</div>
 			<nav class="header-navbar">
@@ -15,10 +18,10 @@
 				</div>
 				<ul>
 					<li class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
-						<a href="/vision_exim/index.php">Home</a>
+						<a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a>
 					</li>
 					<li class="<?php echo ($current_page == 'about-us.php') ? 'active' : ''; ?>">
-						<a href="/vision_exim/about-us.php">About Us</a>
+						<a href="<?= htmlspecialchars(ve_url('about-us.php')) ?>">About Us</a>
 					</li>
 					<li class='dropdown <?php echo in_array($current_page, ['our-products.php', 'pure-ground-spices.php']) ? 'active' : ''; ?>'>
 						<a href="#">Our Products
@@ -29,16 +32,16 @@
 						</a>
 						<span class="sub-menu-toggle"></span>
 						<ul class="sub-menu">
-							<li><a href="/vision_exim/pure-ground-spices.php">Spices (Whole &amp; Blended)</a></li>
-							<li><a href="/vision_exim/pure-ground-spices.php">Pulses</a></li>
-							<li><a href="/vision_exim/pure-ground-spices.php">Grains</a></li>
+							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">Spices (Whole &amp; Blended)</a></li>
+							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">Pulses</a></li>
+							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">Grains</a></li>
 						</ul>
 					</li>
 					<li class="<?php echo ($current_page == 'categories.php') ? 'active' : ''; ?>">
-						<a href="/vision_exim/categories.php">Categories</a>
+						<a href="<?= htmlspecialchars(ve_url('categories.php')) ?>">Categories</a>
 					</li>
 					<li class="<?php echo ($current_page == 'harvest-chart.php') ? 'active' : ''; ?>">
-						<a href="/vision_exim/harvest-chart.php">Harvest Chart</a>
+						<a href="<?= htmlspecialchars(ve_url('harvest-chart.php')) ?>">Harvest Chart</a>
 					</li>
 
 
@@ -47,7 +50,7 @@
 
 			<div class="contact_wrp d-flex align-items-center">
 
-				<a href="/vision_exim/contact-us.php" class="btn">Contact Us</a>
+				<a href="<?= htmlspecialchars(ve_url('contact-us.php')) ?>" class="btn">Contact Us</a>
 			</div>
 
 			<div class="navbar-toggle">

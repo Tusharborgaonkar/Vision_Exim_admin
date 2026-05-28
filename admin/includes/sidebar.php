@@ -1,4 +1,7 @@
-<?php $current_page = basename($_SERVER['PHP_SELF']); ?>
+<?php
+require_once __DIR__ . '/../../includes/config.php';
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
 <?php $current_module = isset($current_module) ? $current_module : ''; ?>
 <?php
 // Dynamic counts for sidebar badges
@@ -19,7 +22,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
     
     <!-- Logo Section -->
     <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
-        <a href="/vision_exim/admin/dashboard.php" class="flex items-center gap-3 group">
+        <a href="<?= htmlspecialchars(ve_url('admin/dashboard.php')) ?>" class="flex items-center gap-3 group">
             <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center group-hover:bg-white/25 transition-colors">
                 <i class="fas fa-seedling text-spice-turmeric-400 text-lg"></i>
             </div>
@@ -37,7 +40,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
     <nav class="sidebar-nav flex-1 overflow-y-auto px-4 py-4 space-y-1">
 
         <!-- Dashboard -->
-        <a href="/vision_exim/admin/dashboard.php" 
+        <a href="<?= htmlspecialchars(ve_url('admin/dashboard.php')) ?>" 
            class="flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-medium transition-all duration-200
            <?php echo ($current_page == 'dashboard.php') 
                 ? 'bg-white/15 text-white shadow-lg shadow-black/10' 
@@ -54,7 +57,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
         </div>
 
         <!-- Products -->
-        <a href="/vision_exim/admin/modules/products/list.php" 
+        <a href="<?= htmlspecialchars(ve_url('admin/modules/products/list.php')) ?>" 
            class="flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-medium transition-all duration-200
            <?php echo ($current_module == 'products') 
                 ? 'bg-white/15 text-white shadow-lg shadow-black/10' 
@@ -67,7 +70,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
         </a>
 
         <!-- Categories -->
-        <a href="/vision_exim/admin/modules/categories/list.php" 
+        <a href="<?= htmlspecialchars(ve_url('admin/modules/categories/list.php')) ?>" 
            class="flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-medium transition-all duration-200
            <?php echo ($current_module == 'categories') 
                 ? 'bg-white/15 text-white shadow-lg shadow-black/10' 
@@ -79,7 +82,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
         </a>
 
         <!-- Export Inquiries -->
-        <a href="/vision_exim/admin/modules/inquiries/list.php" 
+        <a href="<?= htmlspecialchars(ve_url('admin/modules/inquiries/list.php')) ?>" 
            class="flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-medium transition-all duration-200
            <?php echo ($current_module == 'inquiries') 
                 ? 'bg-white/15 text-white shadow-lg shadow-black/10' 
@@ -94,7 +97,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
         </a>
 
         <!-- Harvest Chart -->
-        <a href="/vision_exim/admin/modules/harvest/list.php" 
+        <a href="<?= htmlspecialchars(ve_url('admin/modules/harvest/list.php')) ?>" 
            class="flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-medium transition-all duration-200
            <?php echo ($current_module == 'harvest') 
                 ? 'bg-white/15 text-white shadow-lg shadow-black/10' 
@@ -109,7 +112,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
 
     <!-- Sidebar Footer - Admin Profile -->
     <div class="border-t border-white/10 px-4 py-4">
-        <a href="/vision_exim/admin/profile.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-white/12 transition-colors mb-2">
+        <a href="<?= htmlspecialchars(ve_url('admin/profile.php')) ?>" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-white/12 transition-colors mb-2">
             <div class="w-9 h-9 rounded-full bg-spice-turmeric-500 flex items-center justify-center text-white font-bold text-sm">
                 VE
             </div>
@@ -119,7 +122,7 @@ if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
             </div>
             <i class="fas fa-user-pen text-white/40 text-xs"></i>
         </a>
-        <a href="/vision_exim/admin/logout.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-spice-chili-500/30 transition-colors group w-full">
+        <a href="<?= htmlspecialchars(ve_url('admin/logout.php')) ?>" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/8 hover:bg-spice-chili-500/30 transition-colors group w-full">
             <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
                 <i class="fas fa-right-from-bracket text-white/60 group-hover:text-spice-chili-400 text-sm transition-colors"></i>
             </div>

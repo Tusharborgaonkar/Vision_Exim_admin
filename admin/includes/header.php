@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../includes/config.php'; ?>
 <!DOCTYPE html>
 <html lang="en" class="light">
 
@@ -9,8 +10,8 @@
     <meta name="robots" content="noindex, nofollow">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/vision_exim/images/favicons/favicon-96x96.png" sizes="96x96" />
-    <link rel="shortcut icon" href="/vision_exim/images/favicons/favicon.ico" />
+    <link rel="icon" type="image/png" href="<?= htmlspecialchars(ve_url('images/favicons/favicon-96x96.png')) ?>" sizes="96x96" />
+    <link rel="shortcut icon" href="<?= htmlspecialchars(ve_url('images/favicons/favicon.ico')) ?>" />
 
     <!-- Google Fonts - Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

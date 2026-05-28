@@ -17,7 +17,7 @@ include 'includes/navbar.php';
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="/vision_exim/index.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a></li>
                 <li class="breadcrumb-item">Categories</li>
             </ol>
         </nav>
@@ -35,9 +35,9 @@ include 'includes/navbar.php';
                         $num = str_pad($i + 1, 2, '0', STR_PAD_LEFT);
                         $is_even = ($i % 2 !== 0);
                         $cat_image = !empty($cat['image'])
-                            ? '/vision_exim/' . ltrim($cat['image'], '/')
-                            : '/vision_exim/aaa.webp';
-                        $cat_link = '/vision_exim/our-products.php?category=' . urlencode($cat['slug']);
+                            ? ve_url(ltrim((string)$cat['image'], '/'))
+                            : ve_url('aaa.webp');
+                        $cat_link = ve_url('our-products.php?category=' . urlencode((string)$cat['slug']));
                     ?>
                     <div class="product-box">
                         <span><?= $num ?></span>

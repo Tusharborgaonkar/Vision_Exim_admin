@@ -3,6 +3,8 @@
  * Vision Exim — Frontend product helpers
  */
 
+require_once __DIR__ . '/config.php';
+
 function ve_db(): mysqli
 {
     global $conn;
@@ -15,14 +17,14 @@ function ve_db(): mysqli
 function ve_product_image_url(?string $image_path): string
 {
     if (!empty($image_path)) {
-        return '/vision_exim/' . ltrim($image_path, '/');
+        return ve_url(ltrim($image_path, '/'));
     }
-    return '/vision_exim/aaa.webp';
+    return ve_url('aaa.webp');
 }
 
 function ve_product_url(string $slug): string
 {
-    return '/vision_exim/product.php?slug=' . urlencode($slug);
+    return ve_url('product.php?slug=' . urlencode($slug));
 }
 
 /** @return array<int, array<string, mixed>> */

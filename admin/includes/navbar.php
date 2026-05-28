@@ -1,4 +1,5 @@
 <!-- Top Navbar -->
+<?php require_once __DIR__ . '/../../includes/config.php'; ?>
 <header class="fixed top-0 right-0 left-0 lg:left-[270px] h-[70px] bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-slate-700/60 z-30 sidebar-transition">
     <div class="flex items-center justify-between h-full px-6">
         
@@ -124,7 +125,7 @@
                         <p class="text-[11px] text-gray-400 dark:text-slate-500"><?= htmlspecialchars(isset($_SESSION['admin_user_email']) ? $_SESSION['admin_user_email'] : 'admin@visionexim.com') ?></p>
                     </div>
                     <div class="py-2">
-                        <a href="/vision_exim/admin/profile.php" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                        <a href="<?= htmlspecialchars(ve_url('admin/profile.php')) ?>" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                             <i class="fas fa-user-circle text-gray-400 dark:text-slate-500 w-4"></i> My Profile
                         </a>
                         <!-- <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
@@ -132,7 +133,7 @@
                         </a> -->
                     </div>
                     <div class="border-t border-gray-100 dark:border-slate-700 py-2">
-                        <a href="/vision_exim/admin/logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-spice-chili-500 hover:bg-spice-chili-50 dark:hover:bg-spice-chili-900/20 transition-colors">
+                        <a href="<?= htmlspecialchars(ve_url('admin/logout.php')) ?>" class="flex items-center gap-3 px-4 py-2.5 text-[12px] text-spice-chili-500 hover:bg-spice-chili-50 dark:hover:bg-spice-chili-900/20 transition-colors">
                             <i class="fas fa-right-from-bracket w-4"></i> Sign Out
                         </a>
                     </div>

@@ -109,7 +109,7 @@ include 'includes/navbar.php';
                         <p class="text-white/60 text-[13px]">Manage your spice products and client inquiries with elegance.</p>
                     </div>
                     <div class="flex items-center gap-3">
-                        <a href="/vision_exim/admin/modules/products/add.php" class="px-5 py-2.5 rounded-xl bg-white text-spice-green-600 text-[12px] font-semibold hover:bg-white/90 transition-colors shadow-lg">
+                        <a href="<?= htmlspecialchars(ve_url('admin/modules/products/add.php')) ?>" class="px-5 py-2.5 rounded-xl bg-white text-spice-green-600 text-[12px] font-semibold hover:bg-white/90 transition-colors shadow-lg">
                             <i class="fas fa-plus mr-2"></i>Add Product
                         </a>
                     </div>
@@ -252,7 +252,7 @@ include 'includes/navbar.php';
                         <h3 class="text-[15px] font-semibold text-spice-dark dark:text-white">Latest Inquiries</h3>
                         <p class="text-[12px] text-gray-400 dark:text-slate-500 mt-0.5">Recent client messages</p>
                     </div>
-                    <a href="/vision_exim/admin/modules/inquiries/list.php" class="text-[12px] font-semibold text-spice-green-600 hover:text-spice-green-700 transition-colors">View All →</a>
+                    <a href="<?= htmlspecialchars(ve_url('admin/modules/inquiries/list.php')) ?>" class="text-[12px] font-semibold text-spice-green-600 hover:text-spice-green-700 transition-colors">View All →</a>
                 </div>
                 <div class="px-6 pb-5 space-y-3">
                     <?php if (empty($latest_inquiries)): ?>
@@ -277,7 +277,7 @@ include 'includes/navbar.php';
                         // Time formatting
                         $time_str = date('M d, H:i', strtotime($inq['created_at']));
                     ?>
-                    <div onclick="window.location.href='/vision_exim/admin/modules/inquiries/view.php?id=<?= $inq['id'] ?>'" class="flex items-center gap-4 p-3.5 rounded-xl bg-gray-50/80 dark:bg-slate-700/40 hover:bg-gray-100 dark:hover:bg-slate-700/70 transition-colors cursor-pointer">
+                    <div onclick="window.location.href='<?= htmlspecialchars(ve_url('admin/modules/inquiries/view.php?id=' . (int)$inq['id'])) ?>'" class="flex items-center gap-4 p-3.5 rounded-xl bg-gray-50/80 dark:bg-slate-700/40 hover:bg-gray-100 dark:hover:bg-slate-700/70 transition-colors cursor-pointer">
                         <div class="w-10 h-10 rounded-xl bg-spice-green-600/10 text-spice-green-600 dark:bg-spice-green-600/20 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
                             <span class="font-bold text-[12px]"><?= htmlspecialchars($init) ?></span>
                         </div>
@@ -302,7 +302,7 @@ include 'includes/navbar.php';
                         <h3 class="text-[15px] font-semibold text-spice-dark dark:text-white">Recently Added Products</h3>
                         <p class="text-[12px] text-gray-400 dark:text-slate-500 mt-0.5">Fresh catalog arrivals</p>
                     </div>
-                    <a href="/vision_exim/admin/modules/products/list.php" class="text-[12px] font-semibold text-spice-green-600 hover:text-spice-green-700 transition-colors">View All →</a>
+                    <a href="<?= htmlspecialchars(ve_url('admin/modules/products/list.php')) ?>" class="text-[12px] font-semibold text-spice-green-600 hover:text-spice-green-700 transition-colors">View All →</a>
                 </div>
                 <div class="px-6 pb-5">
                     <div class="overflow-x-auto">
@@ -329,7 +329,7 @@ include 'includes/navbar.php';
                                         $status_style = 'bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-300';
                                     }
                                 ?>
-                                <tr onclick="window.location.href='/vision_exim/admin/modules/products/edit.php?id=<?= $p['id'] ?>'" class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors cursor-pointer">
+                                <tr onclick="window.location.href='<?= htmlspecialchars(ve_url('admin/modules/products/edit.php?id=' . (int)$p['id'])) ?>'" class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors cursor-pointer">
                                     <td class="py-3">
                                         <div class="flex items-center gap-2.5">
                                             <div class="w-8 h-8 rounded-lg bg-spice-green-600/5 flex items-center justify-center text-spice-green-600">

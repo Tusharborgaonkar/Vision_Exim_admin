@@ -14,7 +14,7 @@ if (!$product) {
         <div class="container text-center py-5">
             <h2>Product Not Found</h2>
             <p class="mt-3">This product may be unpublished or the link is incorrect.</p>
-            <a href="/vision_exim/our-products.php" class="hero-btn mt-4 d-inline-block">Browse Products</a>
+            <a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>" class="hero-btn mt-4 d-inline-block">Browse Products</a>
         </div>
     </section>
     <?php
@@ -46,8 +46,8 @@ include 'includes/navbar.php';
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="/vision_exim/index.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="/vision_exim/our-products.php">Our Products</a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Our Products</a></li>
                 <?php if (!empty($product['category_name'])): ?>
                 <li class="breadcrumb-item"><?= htmlspecialchars($product['category_name']) ?></li>
                 <?php endif; ?>
@@ -267,7 +267,7 @@ document.getElementById('productenq_form').addEventListener('submit', function(e
 
     var data = new FormData(form);
 
-    fetch('/vision_exim/submit-inquiry.php', {
+    fetch('<?= htmlspecialchars(ve_url('submit-inquiry.php')) ?>', {
         method: 'POST',
         body: data
     })

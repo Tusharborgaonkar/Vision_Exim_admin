@@ -1526,7 +1526,7 @@ include 'includes/header.php';
 			<?php endif; ?>
 		</div>
 		<div class="text-center mt-5">
-			<a href="/vision_exim/pure-ground-spices.php" class="hero-btn">View All Products</a>
+			<a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>" class="hero-btn">View All Products</a>
 		</div>
 	</div>
 </section>

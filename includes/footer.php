@@ -1,4 +1,5 @@
 <!-- ================= FOOTER START ================= -->
+<?php require_once __DIR__ . '/config.php'; ?>
 <footer>
 	<div class="footer-top">
 		<div class="container">
@@ -12,22 +13,22 @@
 							<div class="col-md-6 mb-3 mb-md-0">
 								<h4>Quick Links</h4>
 								<ul>
-									<li><a href="/vision_exim/index.php">Home</a></li>
-									<li><a href="/vision_exim/about-us.php">About Us</a></li>
-									<li><a href="/vision_exim/our-products.php">Our Products</a></li>
-									<li><a href="/vision_exim/infrastructure.php">Infrastructure</a></li>
-									<li><a href="/vision_exim/contact-us.php">Contact Us</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('about-us.php')) ?>">About Us</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Our Products</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('infrastructure.php')) ?>">Infrastructure</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('contact-us.php')) ?>">Contact Us</a></li>
 								</ul>
 							</div>
 
 							<div class="col-md-6 mb-3 mb-md-0">
 								<h4>Our Products</h4>
 								<ul>
-									<li><a href="/vision_exim/our-products.php">Spices</a></li>
-									<li><a href="/vision_exim/our-products.php">Grains</a></li>
-									<li><a href="/vision_exim/our-products.php">Rice</a></li>
-									<li><a href="/vision_exim/our-products.php">Flour</a></li>
-									<li><a href="/vision_exim/our-products.php">Peanut</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Spices</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Grains</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Rice</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Flour</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Peanut</a></li>
 								</ul>
 							</div>
 
@@ -39,8 +40,8 @@
 				<div class="col-md-12 col-lg-3">
 					<div class="description_social text-center">
 						<div class="footer-logo mb-3">
-							<a href="/vision_exim/index.php">
-								<img src="images/certificates/vision logo color (1).png"
+							<a href="<?= htmlspecialchars(ve_url('index.php')) ?>">
+								<img src="<?= htmlspecialchars(ve_url('images/certificates/vision logo color (1).png')) ?>"
 									alt="Vision Exim Logo"
 									style="height:60px;width:auto;">
 							</a>
@@ -271,7 +272,7 @@
 
 <!-- ================= JS FILES ================= -->
 
-<script src="/vision_exim/assets/js/vendor/jquery-2.2.4.min.js"></script>
+<script src="<?= htmlspecialchars(ve_url('assets/js/vendor/jquery-2.2.4.min.js')) ?>"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 
@@ -279,9 +280,9 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-<script src="/vision_exim/assets/js/vendor/owl.carousel.min.js"></script>
+<script src="<?= htmlspecialchars(ve_url('assets/js/vendor/owl.carousel.min.js')) ?>"></script>
 
-<script src="/vision_exim/assets/js/main.js"></script>
+<script src="<?= htmlspecialchars(ve_url('assets/js/main.js')) ?>"></script>
 
 <script>
 

@@ -173,7 +173,7 @@
 				
 				if ($harvest_result && $harvest_result->num_rows > 0) {
 					while ($row = $harvest_result->fetch_assoc()) {
-						$img = !empty($row['image']) ? '/vision_exim/' . htmlspecialchars($row['image']) : null;
+						$img = !empty($row['image']) ? ve_url(ltrim((string)$row['image'], '/')) : null;
 						echo "<tr>";
 						echo "<td class='spice-name'><div style='display:flex;align-items:center;gap:10px;'>";
 						if ($img) echo "<img src='$img' alt='" . htmlspecialchars($row['spice_name']) . "' style='width:38px;height:38px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid #eee;'>";

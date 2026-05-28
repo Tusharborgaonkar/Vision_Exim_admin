@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,20 +6,20 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<!-- Favicons -->
-	<link rel="icon" type="image/png" href="/vision_exim/images/favicons/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/vision_exim/images/favicons/favicon.svg" />
-	<link rel="shortcut icon" href="/vision_exim/images/favicons/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/vision_exim/images/favicons/apple-touch-icon.png" />
-	<link rel="manifest" href="/vision_exim/images/favicons/site.webmanifest" />
+	<link rel="icon" type="image/png" href="<?= htmlspecialchars(ve_url('images/favicons/favicon-96x96.png')) ?>" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="<?= htmlspecialchars(ve_url('images/favicons/favicon.svg')) ?>" />
+	<link rel="shortcut icon" href="<?= htmlspecialchars(ve_url('images/favicons/favicon.ico')) ?>" />
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= htmlspecialchars(ve_url('images/favicons/apple-touch-icon.png')) ?>" />
+	<link rel="manifest" href="<?= htmlspecialchars(ve_url('images/favicons/site.webmanifest')) ?>" />
 
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:type" content="website" />
 
 	<meta property="og:url" content="./" />
-	<meta property="og:image" content="/vision_exim/images/vision-exim-logo.jpg" />
+	<meta property="og:image" content="<?= htmlspecialchars(ve_url('images/vision-exim-logo.jpg')) ?>" />
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="627">
-	<meta property="og:image" content="/vision_exim/images/vision-exim-logo-square.jpg" />
+	<meta property="og:image" content="<?= htmlspecialchars(ve_url('images/vision-exim-logo-square.jpg')) ?>" />
 	<meta property="og:image:width" content="500">
 	<meta property="og:image:height" content="500">
 	<meta property="og:site_name" content="Vision Exim" />
@@ -66,10 +67,10 @@
 		href="https://fonts.googleapis.com/css2?family=Dangrek&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
 		rel="stylesheet">
 
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="<?= htmlspecialchars(ve_url('css/owl.carousel.min.css')) ?>">
+	<link rel="stylesheet" href="<?= htmlspecialchars(ve_url('css/owl.theme.default.min.css')) ?>">
+	<link rel="stylesheet" href="<?= htmlspecialchars(ve_url('css/style.css')) ?>">
+	<link rel="stylesheet" href="<?= htmlspecialchars(ve_url('css/responsive.css')) ?>">
 </head>
 
 <body>

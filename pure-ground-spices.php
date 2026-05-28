@@ -47,8 +47,8 @@ include 'includes/navbar.php';
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="/vision_exim/index.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="/vision_exim/our-products.php">Our Products</a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Our Products</a></li>
                 <?php if ($category): ?>
                 <li class="breadcrumb-item"><?= htmlspecialchars($category['name']) ?></li>
                 <?php endif; ?>
@@ -65,7 +65,7 @@ include 'includes/navbar.php';
             <?php if (empty($products)): ?>
             <div class="col-12 text-center py-5">
                 <p class="text-muted">No products available in this category at the moment.</p>
-                <a href="/vision_exim/our-products.php" class="btn mt-3">Browse All Categories</a>
+                <a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>" class="btn mt-3">Browse All Categories</a>
             </div>
             <?php else: ?>
             <?php foreach ($products as $p):
