@@ -2,7 +2,7 @@
 <header class="fixed top-0 right-0 left-0 lg:left-[270px] h-[70px] bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-slate-700/60 z-30 sidebar-transition">
     <div class="flex items-center justify-between h-full px-6">
         
-        <!-- Left Side -->
+        <!-- Left Side -->`
         <div class="flex items-center gap-4">
             <!-- Mobile Menu Toggle -->
             <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 rounded-xl bg-spice-green-600/10 hover:bg-spice-green-600/20 flex items-center justify-center text-spice-green-600 transition-colors">
