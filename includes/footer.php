@@ -16,7 +16,7 @@
 									<li><a href="<?= htmlspecialchars(ve_url('index.php')) ?>">Home</a></li>
 									<li><a href="<?= htmlspecialchars(ve_url('about-us.php')) ?>">About Us</a></li>
 									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Our Products</a></li>
-									<li><a href="<?= htmlspecialchars(ve_url('infrastructure.php')) ?>">Infrastructure</a></li>
+									<!-- <li><a href="<?= htmlspecialchars(ve_url('infrastructure.php')) ?>">Infrastructure</a></li> -->
 									<li><a href="<?= htmlspecialchars(ve_url('contact-us.php')) ?>">Contact Us</a></li>
 								</ul>
 							</div>
@@ -24,11 +24,11 @@
 							<div class="col-md-6 mb-3 mb-md-0">
 								<h4>Our Products</h4>
 								<ul>
-									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Spices</a></li>
-									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Grains</a></li>
-									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Rice</a></li>
-									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Flour</a></li>
-									<li><a href="<?= htmlspecialchars(ve_url('our-products.php')) ?>">Peanut</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php?category=spices')) ?>">Spices</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php?category=grains')) ?>">Grains</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php?category=rice')) ?>">Rice</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php?category=flour')) ?>">Flour</a></li>
+									<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php?category=penuts')) ?>">Peanut</a></li>
 								</ul>
 							</div>
 

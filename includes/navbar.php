@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/product-functions.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <header>
@@ -32,9 +33,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
 						</a>
 						<span class="sub-menu-toggle"></span>
 						<ul class="sub-menu">
-							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">Spices (Whole &amp; Blended)</a></li>
-							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">Pulses</a></li>
-							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">Grains</a></li>
+							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">All Products</a></li>
+							<?php
+							$nav_categories = ve_get_all_categories();
+							if (!empty($nav_categories)) {
+								foreach ($nav_categories as $cat) {
+									$cat_url = ve_url('pure-ground-spices.php?category=' . urlencode($cat['slug']));
+									?>
+									<li><a href="<?= htmlspecialchars($cat_url) ?>"><?= htmlspecialchars($cat['name']) ?></a></li>
+									<?php
+								}
+							}
+							?>
 						</ul>
 					</li>
 					<li class="<?php echo ($current_page == 'categories.php') ? 'active' : ''; ?>">

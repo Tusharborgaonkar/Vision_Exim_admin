@@ -21,7 +21,7 @@ $old_quality = '';
 $old_origin_state = '';
 $old_sort = 0;
 $old_featured = 0;
-$old_status = 'draft';
+$old_status = 'active';
 $old_seo_title = '';
 $old_seo_desc = '';
 

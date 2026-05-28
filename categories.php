@@ -37,7 +37,7 @@ include 'includes/navbar.php';
                         $cat_image = !empty($cat['image'])
                             ? ve_url(ltrim((string)$cat['image'], '/'))
                             : ve_url('aaa.webp');
-                        $cat_link = ve_url('our-products.php?category=' . urlencode((string)$cat['slug']));
+                        $cat_link = ve_url('pure-ground-spices.php?category=' . urlencode((string)$cat['slug']));
                     ?>
                     <div class="product-box">
                         <span><?= $num ?></span>

@@ -10,7 +10,7 @@ $res = $conn->query("
     SELECT c.id, c.name, c.slug, c.description, c.image,
            COUNT(p.id) as product_count
     FROM categories c
-    INNER JOIN products p ON p.category_id = c.id AND p.status = 'active'
+    LEFT JOIN products p ON p.category_id = c.id AND p.status = 'active'
     WHERE c.status = 'active'
     GROUP BY c.id
     ORDER BY c.sort_order ASC, c.name ASC
