@@ -20,8 +20,8 @@
 					<li class="<?php echo ($current_page == 'about-us.php') ? 'active' : ''; ?>">
 						<a href="/vision_exim/about-us.php">About Us</a>
 					</li>
-					<li class='dropdown <?php echo ($current_page == 'our-products.php') ? 'active' : ''; ?>'>
-						<a href="/vision_exim/our-products.php">Our Products
+					<li class='dropdown <?php echo in_array($current_page, ['our-products.php', 'pure-ground-spices.php']) ? 'active' : ''; ?>'>
+						<a href="#">Our Products
 							<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M1 1.5L4 4.5L7 1.5" stroke="currentColor" stroke-width="1.4"
 									stroke-linecap="round" stroke-linejoin="round" />
@@ -29,10 +29,13 @@
 						</a>
 						<span class="sub-menu-toggle"></span>
 						<ul class="sub-menu">
-							<li><a href="/vision_exim/pure-ground-spices.php">Spices (Whole & Blended)</a></li>
+							<li><a href="/vision_exim/pure-ground-spices.php">Spices (Whole &amp; Blended)</a></li>
 							<li><a href="/vision_exim/pure-ground-spices.php">Pulses</a></li>
 							<li><a href="/vision_exim/pure-ground-spices.php">Grains</a></li>
 						</ul>
+					</li>
+					<li class="<?php echo ($current_page == 'categories.php') ? 'active' : ''; ?>">
+						<a href="/vision_exim/categories.php">Categories</a>
 					</li>
 					<li class="<?php echo ($current_page == 'harvest-chart.php') ? 'active' : ''; ?>">
 						<a href="/vision_exim/harvest-chart.php">Harvest Chart</a>

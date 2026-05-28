@@ -75,6 +75,20 @@ function ve_get_product_by_slug(string $slug): ?array
 }
 
 /** @return array<int, array<string, mixed>> */
+function ve_get_all_categories(): array
+{
+    $conn = ve_db();
+    $categories = [];
+    $result = $conn->query("SELECT id, name, slug, image, description FROM categories WHERE status = 'active' ORDER BY sort_order ASC, name ASC");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row;
+        }
+    }
+    return $categories;
+}
+
+/** @return array<int, array<string, mixed>> */
 function ve_get_products_by_category(int $category_id, int $limit = 3, int $exclude_id = 0): array
 {
     $conn = ve_db();

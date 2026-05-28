@@ -1,46 +1,57 @@
 <?php
 require_once __DIR__ . '/includes/product-functions.php';
 
-$page_title = "Pure Ground Spices | Vision Exim";
+$conn = ve_db();
+
+// Get category filter from URL
+$cat_slug = trim($_GET['category'] ?? '');
+
+// Fetch category info if slug provided
+$category = null;
+if (!empty($cat_slug)) {
+    $stmt = $conn->prepare("SELECT * FROM categories WHERE slug = ? AND status = 'active' LIMIT 1");
+    $stmt->bind_param('s', $cat_slug);
+    $stmt->execute();
+    $category = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+}
+
+$page_title = $category ? htmlspecialchars($category['name']) . " | Vision Exim" : "Our Products | Vision Exim";
+
+// Fetch products — filtered by category if provided
+$products = [];
+if ($category) {
+    $stmt = $conn->prepare("SELECT id, name, slug, image FROM products WHERE status = 'active' AND category_id = ? ORDER BY sort_order ASC, name ASC");
+    $stmt->bind_param('i', $category['id']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()) $products[] = $row;
+    $stmt->close();
+} else {
+    $res = $conn->query("SELECT id, name, slug, image FROM products WHERE status = 'active' ORDER BY sort_order ASC, name ASC");
+    if ($res) while ($row = $res->fetch_assoc()) $products[] = $row;
+}
+
 include 'includes/header.php';
 include 'includes/navbar.php';
-
-// Fetch all active products (optionally filter by a spices category if needed)
-$conn = ve_db();
-$products = [];
-$res = $conn->query("SELECT p.id, p.name, p.slug, p.image FROM products p WHERE p.status = 'active' ORDER BY p.sort_order ASC, p.name ASC");
-if ($res) {
-    while ($row = $res->fetch_assoc()) {
-        $products[] = $row;
-    }
-}
 ?>
 
 <section class="inner_banner banner-products">
     <div class="container">
         <div class="title text-center">
             <h2>
-                <svg width="76" height="34" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44.47 20.61">
-                    <g id="body">
-                        <path d="M420,311h8.89a1.69,1.69,0,0,1,.11-1,2,2,0,0,1,2-1l17.65-2a5.48,5.48,0,0,1,2.35,1,5.57,5.57,0,0,1,2,3,3.39,3.39,0,0,0-3-1,3,3,0,0,0-1.54,1,15.75,15.75,0,0,1-3.46,2,19.42,19.42,0,0,1-10,1,27.87,27.87,0,0,1-5-1,41.31,41.31,0,0,0-5,0c-1.79.11-3.92.35-4,0s1-.54,1-1S420.91,311.21,420,311Z" transform="translate(-412.8 -293.62)" />
-                    </g>
-                    <g id="front_wings" data-name="front wings">
-                        <path d="M431.26,312.49a12.73,12.73,0,0,0-.24-2,14.36,14.36,0,0,0-1.49-3.85c-1.7-2.9-6-3.6-9.79-5.84a20.21,20.21,0,0,1-6.94-7.2,52.11,52.11,0,0,0,8.68,5c5.57,2.51,8.57,2.64,12.77,5.47A26.38,26.38,0,0,1,440,309.4Z" transform="translate(-412.8 -293.62)" />
-                        <path d="M453,311" transform="translate(-412.8 -293.62)" />
-                    </g>
-                    <g id="back_wings" data-name="back wings">
-                        <path d="M439.76,311.09a5.23,5.23,0,0,1-.35-2.35,5.32,5.32,0,0,1,1.48-3.19c1.85-1.34,3.87-2.71,6-4.05a102.12,102.12,0,0,1,10.35-5.61l-12.1,8.76a3.75,3.75,0,0,0-2.64,3.61,2.84,2.84,0,0,0,.85,1.63Z" transform="translate(-412.8 -293.62)" />
-                    </g>
-                </svg>
-                Pure Ground Spices
+                <?php include __DIR__ . '/includes/product-butterfly-svg.php'; ?>
+                <?= $category ? htmlspecialchars($category['name']) : 'Our Products' ?>
             </h2>
-            <p>Premium quality ground spices processed with care to retain natural aroma, flavor, and purity for global markets.</p>
+            <p><?= $category && !empty($category['description']) ? htmlspecialchars($category['description']) : 'Premium quality products processed with care to retain natural aroma, flavor, and purity for global markets.' ?></p>
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center">
                 <li class="breadcrumb-item"><a href="/vision_exim/index.php">Home</a></li>
                 <li class="breadcrumb-item"><a href="/vision_exim/our-products.php">Our Products</a></li>
-                <li class="breadcrumb-item">Pure Ground Spices</li>
+                <?php if ($category): ?>
+                <li class="breadcrumb-item"><?= htmlspecialchars($category['name']) ?></li>
+                <?php endif; ?>
             </ol>
         </nav>
     </div>
@@ -53,22 +64,22 @@ if ($res) {
         <div class="row justify-content-center">
             <?php if (empty($products)): ?>
             <div class="col-12 text-center py-5">
-                <p class="text-muted">No products available at the moment.</p>
+                <p class="text-muted">No products available in this category at the moment.</p>
+                <a href="/vision_exim/our-products.php" class="btn mt-3">Browse All Categories</a>
             </div>
             <?php else: ?>
             <?php foreach ($products as $p):
-                $p_url   = ve_product_url($p['slug']);
-                $p_img   = ve_product_image_url($p['image'] ?? null);
-                $p_name  = htmlspecialchars($p['name']);
-                $p_url_e = htmlspecialchars($p_url);
+                $p_url  = ve_product_url($p['slug']);
+                $p_img  = ve_product_image_url($p['image'] ?? null);
+                $p_name = htmlspecialchars($p['name']);
             ?>
             <div class="col-lg-3 col-md-4" data-aos="zoom-in">
                 <div class="collections-card">
                     <div class="collections-img">
                         <img src="<?= htmlspecialchars($p_img) ?>" alt="<?= $p_name ?>">
                     </div>
-                    <h5><a href="<?= $p_url_e ?>"><?= $p_name ?></a></h5>
-                    <a href="<?= $p_url_e ?>" class="btn">VIEW Details
+                    <h5><a href="<?= htmlspecialchars($p_url) ?>"><?= $p_name ?></a></h5>
+                    <a href="<?= htmlspecialchars($p_url) ?>" class="btn">VIEW Details
                         <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 10.5203L6 6.02026L1 1.52026" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>

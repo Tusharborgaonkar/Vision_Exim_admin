@@ -1,5 +1,15 @@
 <?php $current_page = basename($_SERVER['PHP_SELF']); ?>
 <?php $current_module = isset($current_module) ? $current_module : ''; ?>
+<?php
+// Dynamic counts for sidebar badges
+if (!isset($conn)) { include __DIR__ . '/db.php'; }
+$_sidebar_products = 0;
+$_sidebar_inquiries = 0;
+$r = $conn->query("SELECT COUNT(*) as c FROM products WHERE status='active'");
+if ($r) $_sidebar_products = (int)$r->fetch_assoc()['c'];
+$r = $conn->query("SELECT COUNT(*) as c FROM inquiries WHERE status='new'");
+if ($r) $_sidebar_inquiries = (int)$r->fetch_assoc()['c'];
+?>
 
 <!-- Sidebar Overlay (Mobile) -->
 <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
@@ -53,7 +63,7 @@
                 <i class="fas fa-boxes-stacked text-xs <?php echo ($current_module == 'products') ? 'text-white' : 'text-white/70'; ?>"></i>
             </div>
             <span>Products</span>
-            <span class="ml-auto bg-spice-turmeric-500/20 text-spice-turmeric-300 text-[10px] font-bold px-2 py-0.5 rounded-full">24</span>
+            <span class="ml-auto bg-spice-turmeric-500/20 text-spice-turmeric-300 text-[10px] font-bold px-2 py-0.5 rounded-full"><?= $_sidebar_products ?></span>
         </a>
 
         <!-- Categories -->
@@ -78,7 +88,9 @@
                 <i class="fas fa-envelope-open-text text-xs <?php echo ($current_module == 'inquiries') ? 'text-white' : 'text-white/70'; ?>"></i>
             </div>
             <span>Inquiries</span>
-            <span class="ml-auto bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
+            <?php if ($_sidebar_inquiries > 0): ?>
+            <span class="ml-auto bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full"><?= $_sidebar_inquiries ?></span>
+            <?php endif; ?>
         </a>
 
         <!-- Harvest Chart -->
