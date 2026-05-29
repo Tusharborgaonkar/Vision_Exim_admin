@@ -391,26 +391,23 @@ include '../../includes/navbar.php';
                             
                             <!-- Thumbnail Preview -->
                             <div class="relative rounded-2xl overflow-hidden group border border-gray-200 dark:border-slate-700 mb-4 max-w-sm mx-auto" id="imagePreviewContainer">
-                                <?php if (!empty($old_image) && file_exists('../../../' . $old_image)): ?>
-                                <img src="/vision_exim/<?= htmlspecialchars($old_image) ?>" alt="" id="imgPreview" class="w-full h-48 object-cover">
-                                <?php else: ?>
-                                <div class="w-full h-44 bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center" id="fallbackIcon">
+                                <?php 
+                                $has_image = !empty($old_image) && file_exists('../../../' . $old_image);
+                                ?>
+                                <img src="<?= $has_image ? '/vision_exim/' . htmlspecialchars($old_image) : '' ?>" alt="" id="imgPreview" class="w-full h-48 object-cover <?= $has_image ? '' : 'hidden' ?>">
+                                <div class="w-full h-44 bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center <?= $has_image ? 'hidden' : '' ?>" id="fallbackIcon">
                                     <i class="fas fa-image text-4xl text-gray-300 dark:text-slate-600 mb-2"></i>
                                     <span class="text-xs text-gray-400 dark:text-slate-500">No Image Uploaded</span>
                                 </div>
-                                <img id="imgPreview" class="w-full h-48 object-cover hidden">
-                                <?php endif; ?>
 
                                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <label class="w-8 h-8 rounded-lg bg-white text-gray-700 hover:bg-gray-100 flex items-center justify-center shadow cursor-pointer" title="Upload New">
                                         <i class="fas fa-upload text-xs"></i>
                                         <input type="file" name="featured_image" class="hidden" accept="image/*" onchange="previewImage(this)" />
                                     </label>
-                                    <?php if (!empty($old_image)): ?>
-                                    <button type="button" onclick="removeCurrentImage()" class="w-8 h-8 rounded-lg bg-spice-chili-500 text-white hover:bg-spice-chili-600 flex items-center justify-center shadow" title="Remove">
+                                    <button type="button" id="removeImgBtn" onclick="removeCurrentImage()" class="w-8 h-8 rounded-lg bg-spice-chili-500 text-white hover:bg-spice-chili-600 flex items-center justify-center shadow <?= $has_image ? '' : 'hidden' ?>" title="Remove">
                                         <i class="fas fa-trash text-xs"></i>
                                     </button>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -580,6 +577,9 @@ function previewImage(input) {
             const fallback = document.getElementById('fallbackIcon');
             if (fallback) fallback.classList.add('hidden');
             
+            const removeBtn = document.getElementById('removeImgBtn');
+            if (removeBtn) removeBtn.classList.remove('hidden');
+            
             document.getElementById('removeImageFlag').value = '0';
         }
         reader.readAsDataURL(input.files[0]);
@@ -588,22 +588,23 @@ function previewImage(input) {
 
 function removeCurrentImage() {
     document.getElementById('removeImageFlag').value = '1';
-    const preview = document.getElementById('imgPreview');
-    if (preview) preview.classList.add('hidden');
     
-    const container = document.getElementById('imagePreviewContainer');
-    if (container) {
-        let fallback = document.getElementById('fallbackIcon');
-        if (!fallback) {
-            fallback = document.createElement('div');
-            fallback.id = 'fallbackIcon';
-            fallback.className = 'w-full h-44 bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center';
-            fallback.innerHTML = '<i class="fas fa-image text-4xl text-gray-300 dark:text-slate-600 mb-2"></i><span class="text-xs text-gray-400 dark:text-slate-500">No Image Uploaded</span>';
-            container.prepend(fallback);
-        } else {
-            fallback.classList.remove('hidden');
-        }
+    // Clear file input value
+    const fileInput = document.querySelector('input[name="featured_image"]');
+    if (fileInput) fileInput.value = '';
+    
+    const preview = document.getElementById('imgPreview');
+    if (preview) {
+        preview.classList.add('hidden');
+        preview.src = '';
     }
+    
+    const fallback = document.getElementById('fallbackIcon');
+    if (fallback) fallback.classList.remove('hidden');
+    
+    const removeBtn = document.getElementById('removeImgBtn');
+    if (removeBtn) removeBtn.classList.add('hidden');
+    
     showToast('Image flagged for removal. Click Save Changes to confirm.', 'info');
 }
 

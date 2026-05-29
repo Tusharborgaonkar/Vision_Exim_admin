@@ -80,7 +80,8 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                 </a>
             </div>
             <?php else: ?>
-            <div class="overflow-x-auto">
+            <!-- Desktop View (Horizontal Scrollable Table) -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full min-w-[900px] border-collapse">
                     <thead>
                         <tr class="border-b border-gray-100 dark:border-slate-700 pb-3">
@@ -141,23 +142,67 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                     </tbody>
                 </table>
             </div>
+
+            <!-- Mobile View (Card List) -->
+            <div class="block md:hidden space-y-4">
+                <?php foreach ($harvest_data as $row): ?>
+                <div class="bg-gray-50/50 dark:bg-slate-700/20 rounded-xl p-4 border border-gray-100 dark:border-slate-700/50" id="mobile-row-<?= $row['id'] ?>">
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-3">
+                            <?php if (!empty($row['image'])): ?>
+                            <img src="/vision_exim/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['spice_name']) ?>" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100 dark:border-slate-700">
+                            <?php else: ?>
+                            <div class="w-10 h-10 rounded-lg bg-spice-green-600/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-seedling text-spice-green-600 text-sm"></i>
+                            </div>
+                            <?php endif; ?>
+                            <span class="text-[14px] font-bold text-spice-dark dark:text-white"><?= htmlspecialchars($row['spice_name']) ?></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <a href="edit.php?id=<?= $row['id'] ?>" 
+                               class="w-8 h-8 rounded-lg bg-spice-green-600/5 hover:bg-spice-green-600/10 text-spice-green-600 dark:text-emerald-400 flex items-center justify-center transition-colors" 
+                               title="Edit Crop Season">
+                                <i class="fas fa-edit text-xs"></i>
+                            </a>
+                            <button onclick="deleteRow(<?= $row['id'] ?>, '<?= htmlspecialchars($row['spice_name'], ENT_QUOTES) ?>')" 
+                                    class="w-8 h-8 rounded-lg bg-spice-chili-500/5 hover:bg-spice-chili-500/10 text-spice-chili-500 flex items-center justify-center transition-colors" 
+                                    title="Delete Spice">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 12 Months Grid -->
+                    <div class="grid grid-cols-4 gap-2">
+                        <?php foreach ($month_cols as $index => $col):
+                            $is_active = (int)$row[$col] > 0;
+                            $m_label = $month_labels[$index];
+                        ?>
+                        <div class="text-center py-1.5 rounded-lg border text-[10px] font-medium transition-all <?= $is_active ? 'bg-spice-green-600/10 text-spice-green-600 border-spice-green-600/20 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800 font-semibold' : 'bg-gray-50/55 text-gray-400 border-gray-100 dark:bg-slate-800/50 dark:text-slate-500 dark:border-slate-800' ?>">
+                            <?= $m_label ?>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
             <?php endif; ?>
 
             <!-- Legend Section -->
-            <div class="flex items-center justify-center gap-6 mt-6 border-t border-gray-100 dark:border-slate-700 pt-5 text-[12px]">
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-6 border-t border-gray-100 dark:border-slate-700 pt-5 text-[12px]">
                 <div class="flex items-center gap-2">
-                    <img src="/vision_exim/aaa.webp" class="w-7 h-7 rounded-md object-cover">
+                    <span class="w-6 h-3 rounded bg-spice-green-600 dark:bg-emerald-500 block"></span>
                     <span class="text-gray-500 dark:text-slate-400 font-medium">Harvesting Period</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="w-7 h-7 rounded-md bg-gray-100 dark:bg-slate-700 block"></span>
+                    <span class="w-6 h-3 rounded bg-gray-100 dark:bg-slate-700 block border border-gray-200 dark:border-slate-600"></span>
                     <span class="text-gray-500 dark:text-slate-400 font-medium">Off Season</span>
                 </div>
             </div>
         </div>
 
         <!-- Info Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-card border border-gray-100/50 dark:border-slate-700 p-6 flex items-start gap-4">
                 <div class="w-10 h-10 rounded-xl bg-spice-green-600/10 flex items-center justify-center text-spice-green-600 flex-shrink-0">
                     <i class="fas fa-lightbulb text-sm"></i>
@@ -176,7 +221,7 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                     <p class="text-[12px] text-gray-400 dark:text-slate-500 leading-relaxed">All harvest data is stored in the <code class="bg-gray-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-[11px]">harvest_calendar</code> table. Changes here are reflected on the public website instantly.</p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </main>
@@ -200,6 +245,13 @@ function deleteRow(id, name) {
                         row.style.opacity = '0';
                         row.style.transform = 'translateX(20px)';
                         setTimeout(() => row.remove(), 300);
+                    }
+                    const mobileRow = document.getElementById('mobile-row-' + id);
+                    if (mobileRow) {
+                        mobileRow.style.transition = 'opacity 0.3s, transform 0.3s';
+                        mobileRow.style.opacity = '0';
+                        mobileRow.style.transform = 'translateX(20px)';
+                        setTimeout(() => mobileRow.remove(), 300);
                     }
                     showToast(name + ' removed from harvest calendar', 'success');
                 } else {

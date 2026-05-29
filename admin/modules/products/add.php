@@ -355,21 +355,24 @@ include '../../includes/navbar.php';
                     </div>
 
                     <div class="space-y-6">
-                        <!-- Featured Image Upload -->
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Featured Image</label>
-                            <div class="flex items-center justify-center w-full">
-                                <label class="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-slate-700/20 hover:bg-gray-100 dark:hover:bg-slate-700/30 transition-all group relative">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6" id="uploadLabel">
-                                        <div class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                            <i class="fas fa-cloud-arrow-up text-md"></i>
-                                        </div>
-                                        <p class="text-[12px] font-semibold text-spice-dark dark:text-slate-200">Click to upload or drag & drop</p>
-                                        <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-1">PNG, JPG, JPEG (Max. 3MB - Recommended: 800x800px)</p>
-                                    </div>
-                                    <input type="file" name="featured_image" class="hidden" accept="image/*" onchange="previewImage(this)" />
-                                    <img id="imgPreview" class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden">
-                                </label>
+                            <div class="relative rounded-2xl overflow-hidden group border border-gray-200 dark:border-slate-700 mb-4 max-w-sm mx-auto" id="imagePreviewContainer">
+                                <img src="" alt="" id="imgPreview" class="w-full h-48 object-cover hidden">
+                                <div class="w-full h-44 bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center" id="fallbackIcon">
+                                    <i class="fas fa-image text-4xl text-gray-300 dark:text-slate-600 mb-2"></i>
+                                    <span class="text-xs text-gray-400 dark:text-slate-500">No Image Uploaded</span>
+                                </div>
+
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <label class="w-8 h-8 rounded-lg bg-white text-gray-700 hover:bg-gray-100 flex items-center justify-center shadow cursor-pointer" title="Upload New">
+                                        <i class="fas fa-upload text-xs"></i>
+                                        <input type="file" name="featured_image" class="hidden" accept="image/*" onchange="previewImage(this)" />
+                                    </label>
+                                    <button type="button" id="removeImgBtn" onclick="removeCurrentImage()" class="w-8 h-8 rounded-lg bg-spice-chili-500 text-white hover:bg-spice-chili-600 flex items-center justify-center shadow hidden" title="Remove">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -503,12 +506,36 @@ function previewImage(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            document.getElementById('imgPreview').src = e.target.result;
-            document.getElementById('imgPreview').classList.remove('hidden');
-            document.getElementById('uploadLabel').classList.add('opacity-0');
+            const preview = document.getElementById('imgPreview');
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+            
+            const fallback = document.getElementById('fallbackIcon');
+            if (fallback) fallback.classList.add('hidden');
+            
+            const removeBtn = document.getElementById('removeImgBtn');
+            if (removeBtn) removeBtn.classList.remove('hidden');
         }
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function removeCurrentImage() {
+    // Clear file input value
+    const fileInput = document.querySelector('input[name="featured_image"]');
+    if (fileInput) fileInput.value = '';
+    
+    const preview = document.getElementById('imgPreview');
+    if (preview) {
+        preview.classList.add('hidden');
+        preview.src = '';
+    }
+    
+    const fallback = document.getElementById('fallbackIcon');
+    if (fallback) fallback.classList.remove('hidden');
+    
+    const removeBtn = document.getElementById('removeImgBtn');
+    if (removeBtn) removeBtn.classList.add('hidden');
 }
 
 function previewGalleryImages(input) {

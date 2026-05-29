@@ -176,26 +176,36 @@ include '../../includes/navbar.php';
             <!-- Image Upload -->
             <div>
                 <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Product Image</label>
-                <div class="flex items-start gap-5">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
                     <!-- Current Image Preview -->
                     <div class="relative flex-shrink-0" id="imgPreviewWrap">
-                        <?php if (!empty($crop['image']) && file_exists('../../../' . $crop['image'])): ?>
-                        <img id="imgPreview" src="/vision_exim/<?= htmlspecialchars($crop['image']) ?>" class="w-24 h-24 rounded-xl object-cover border-2 border-gray-200 dark:border-slate-600">
-                        <button type="button" onclick="removeImage()" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center shadow hover:bg-red-600" title="Remove">
-                            <i class="fas fa-times text-[10px]"></i>
-                        </button>
-                        <?php else: ?>
-                        <div id="imgPlaceholder" class="w-24 h-24 rounded-xl bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-slate-600">
+                        <?php 
+                        $has_image = !empty($crop['image']) && file_exists('../../../' . $crop['image']);
+                        ?>
+                        
+                        <!-- Placeholder -->
+                        <div id="imgPlaceholder" class="w-24 h-24 rounded-xl bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-slate-600 <?= $has_image ? 'hidden' : '' ?>">
                             <i class="fas fa-image text-2xl text-gray-300 dark:text-slate-500"></i>
                             <span class="text-[9px] text-gray-400 mt-1">No Image</span>
                         </div>
-                        <img id="imgPreview" class="w-24 h-24 rounded-xl object-cover border-2 border-gray-200 dark:border-slate-600 hidden">
-                        <?php endif; ?>
+
+                        <!-- Image Preview -->
+                        <img id="imgPreview" 
+                             src="<?= $has_image ? '/vision_exim/' . htmlspecialchars($crop['image']) : '' ?>" 
+                             class="w-24 h-24 rounded-xl object-cover border-2 border-gray-200 dark:border-slate-600 <?= $has_image ? '' : 'hidden' ?>">
+
+                        <!-- Remove Action Button -->
+                        <button type="button" 
+                                id="removeImgBtn" 
+                                onclick="removeImage()" 
+                                class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center shadow hover:bg-red-600 transition-all <?= $has_image ? '' : 'hidden' ?>" 
+                                title="Remove">
+                            <i class="fas fa-times text-[10px]"></i>
+                        </button>
                     </div>
 
                     <!-- Upload Area -->
-                    <label class="flex-1 flex flex-col items-center justify-center h-24 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl cursor-pointer bg-gray-50/50 dark:bg-slate-700/20 hover:bg-gray-100 dark:hover:bg-slate-700/40 transition-all">
-                        <i class="fas fa-cloud-upload-alt text-xl text-gray-300 dark:text-slate-500 mb-1"></i>
+                    <label class="w-full sm:flex-1 flex flex-col items-center justify-center h-24 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl cursor-pointer bg-gray-50/50 dark:bg-slate-700/20 hover:bg-gray-100 dark:hover:bg-slate-700/40 transition-all">
                         <span class="text-[11px] font-semibold text-gray-500 dark:text-slate-400">Click to upload new image</span>
                         <span class="text-[10px] text-gray-400 dark:text-slate-500 mt-0.5">JPG, PNG, WEBP — Max 3MB</span>
                         <input type="file" name="crop_image" class="hidden" accept="image/*" onchange="previewNewImage(this)">
@@ -253,9 +263,12 @@ function previewNewImage(input) {
         reader.onload = function(e) {
             var preview = document.getElementById('imgPreview');
             var placeholder = document.getElementById('imgPlaceholder');
+            var removeBtn = document.getElementById('removeImgBtn');
+            
             preview.src = e.target.result;
             preview.classList.remove('hidden');
             if (placeholder) placeholder.classList.add('hidden');
+            if (removeBtn) removeBtn.classList.remove('hidden');
             document.getElementById('removeImageFlag').value = '0';
         };
         reader.readAsDataURL(input.files[0]);
@@ -264,16 +277,25 @@ function previewNewImage(input) {
 
 function removeImage() {
     document.getElementById('removeImageFlag').value = '1';
+    
+    // Clear file input
+    var fileInput = document.querySelector('input[name="crop_image"]');
+    if (fileInput) fileInput.value = '';
+    
+    // Hide preview
     var preview = document.getElementById('imgPreview');
-    if (preview) preview.classList.add('hidden');
-    var wrap = document.getElementById('imgPreviewWrap');
-    if (wrap) {
-        var ph = document.createElement('div');
-        ph.id = 'imgPlaceholder';
-        ph.className = 'w-24 h-24 rounded-xl bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-slate-600';
-        ph.innerHTML = '<i class="fas fa-image text-2xl text-gray-300 dark:text-slate-500"></i><span class="text-[9px] text-gray-400 mt-1">No Image</span>';
-        wrap.prepend(ph);
+    if (preview) {
+        preview.classList.add('hidden');
+        preview.src = '';
     }
+    
+    // Show placeholder
+    var placeholder = document.getElementById('imgPlaceholder');
+    if (placeholder) placeholder.classList.remove('hidden');
+    
+    // Hide remove button
+    var removeBtn = document.getElementById('removeImgBtn');
+    if (removeBtn) removeBtn.classList.add('hidden');
 }
 </script>
 
