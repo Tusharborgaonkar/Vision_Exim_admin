@@ -242,7 +242,7 @@ include '../../includes/navbar.php';
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
                 <div class="flex items-center gap-2 text-[12px] text-gray-400 dark:text-slate-500 mb-1">
-                    <a href="/vision_exim/admin/dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
+                    <a href="../../dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
                     <span>/</span>
                     <a href="list.php" class="hover:text-spice-green-600 transition-colors">Products</a>
                     <span>/</span>
@@ -394,7 +394,7 @@ include '../../includes/navbar.php';
                                 <?php 
                                 $has_image = !empty($old_image) && file_exists('../../../' . $old_image);
                                 ?>
-                                <img src="<?= $has_image ? '/vision_exim/' . htmlspecialchars($old_image) : '' ?>" alt="" id="imgPreview" class="w-full h-48 object-cover <?= $has_image ? '' : 'hidden' ?>">
+                                <img src="<?= $has_image ? '../../../' . htmlspecialchars($old_image) : '' ?>" alt="" id="imgPreview" class="w-full h-48 object-cover <?= $has_image ? '' : 'hidden' ?>">
                                 <div class="w-full h-44 bg-gray-100 dark:bg-slate-700 flex flex-col items-center justify-center <?= $has_image ? 'hidden' : '' ?>" id="fallbackIcon">
                                     <i class="fas fa-image text-4xl text-gray-300 dark:text-slate-600 mb-2"></i>
                                     <span class="text-xs text-gray-400 dark:text-slate-500">No Image Uploaded</span>
@@ -430,7 +430,7 @@ include '../../includes/navbar.php';
                             <div class="grid grid-cols-4 gap-3 mb-4" id="existingGalleryContainer">
                                 <?php foreach ($gallery_images as $index => $img): ?>
                                 <div class="relative w-full h-16 rounded-xl overflow-hidden group border border-gray-200 dark:border-slate-700 shadow-sm" data-index="<?= $index ?>">
-                                    <img src="/vision_exim/<?= htmlspecialchars($img) ?>" class="w-full h-full object-cover">
+                                    <img src="../../../<?= htmlspecialchars($img) ?>" class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <button type="button" onclick="removeGalleryImage(<?= $index ?>, this)" class="w-6 h-6 rounded-lg bg-spice-chili-500 text-white hover:bg-spice-chili-600 flex items-center justify-center shadow animate-fade-in" title="Remove image">
                                             <i class="fas fa-trash text-[10px]"></i>

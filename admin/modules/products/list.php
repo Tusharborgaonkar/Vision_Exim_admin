@@ -103,7 +103,7 @@ include '../../includes/navbar.php';
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
                 <div class="flex items-center gap-2 text-[12px] text-gray-400 dark:text-slate-500 mb-1">
-                    <a href="/vision_exim/admin/dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
+                    <a href="../../dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
                     <span>/</span>
                     <span class="text-gray-600 dark:text-slate-400 font-medium">Products</span>
                 </div>
@@ -207,7 +207,7 @@ include '../../includes/navbar.php';
                             <td class="px-5 py-4 ps-6">
                                 <div class="flex items-center gap-3">
                                     <?php if (!empty($row['image']) && file_exists('../../../' . $row['image'])): ?>
-                                    <img src="/vision_exim/<?= htmlspecialchars($row['image']) ?>" alt="" class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
+                                    <img src="../../../<?= htmlspecialchars($row['image']) ?>" alt="" class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
                                     <?php else: ?>
                                     <div class="w-12 h-12 rounded-xl <?= $bg_color ?> flex items-center justify-center flex-shrink-0">
                                         <i class="fas <?= $icon ?> <?= $icon_color ?> text-base"></i>

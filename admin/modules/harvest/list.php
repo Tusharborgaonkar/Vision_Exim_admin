@@ -48,7 +48,7 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
                 <div class="flex items-center gap-2 text-[12px] text-gray-400 dark:text-slate-500 mb-1">
-                    <a href="/vision_exim/admin/dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
+                    <a href="../../dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
                     <span>/</span>
                     <span class="text-gray-600 dark:text-slate-400 font-medium">Harvest Chart</span>
                 </div>
@@ -99,7 +99,7 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                             <td class="py-4 ps-4 align-middle">
                                 <div class="flex items-center gap-3">
                                     <?php if (!empty($row['image'])): ?>
-                                    <img src="/vision_exim/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['spice_name']) ?>" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100 dark:border-slate-700">
+                                    <img src="../../../<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['spice_name']) ?>" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100 dark:border-slate-700">
                                     <?php else: ?>
                                     <div class="w-10 h-10 rounded-lg bg-spice-green-600/10 flex items-center justify-center flex-shrink-0">
                                         <i class="fas fa-seedling text-spice-green-600 text-sm"></i>
@@ -110,7 +110,7 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                             </td>
                             <!-- 12 Months Indicators -->
                             <?php 
-                            $prod_img = !empty($row['image']) ? '/vision_exim/' . htmlspecialchars($row['image']) : null;
+                            $prod_img = !empty($row['image']) ? '../../../' . htmlspecialchars($row['image']) : null;
                             foreach ($month_cols as $col): ?>
                             <td class="py-4 align-middle text-center px-1">
                                 <?php if ((int)$row[$col] > 0 && $prod_img): ?>
@@ -150,7 +150,7 @@ $month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
                     <div class="flex items-center justify-between gap-3 mb-3">
                         <div class="flex items-center gap-3">
                             <?php if (!empty($row['image'])): ?>
-                            <img src="/vision_exim/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['spice_name']) ?>" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100 dark:border-slate-700">
+                            <img src="../../../<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['spice_name']) ?>" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100 dark:border-slate-700">
                             <?php else: ?>
                             <div class="w-10 h-10 rounded-lg bg-spice-green-600/10 flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-seedling text-spice-green-600 text-sm"></i>

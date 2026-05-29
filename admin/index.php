@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Check for remember me cookie
-$saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['remember_admin']) : 'admin@visionexim.com';
+$saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['remember_admin']) : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +50,7 @@ $saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['re
     <title>Login — Vision Exim Admin</title>
     <meta name="robots" content="noindex, nofollow">
 
-    <link rel="icon" type="image/png" href="/vision_exim/images/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../images/favicons/favicon-96x96.png" sizes="96x96" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -232,7 +232,7 @@ $saved_email = isset($_COOKIE['remember_admin']) ? htmlspecialchars($_COOKIE['re
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300">
                                 <i class="fas fa-lock text-sm"></i>
                             </span>
-                            <input type="password" name="password" value="admin123" placeholder="Enter your password" required
+                            <input type="password" name="password" value="" placeholder="Enter your password" required
                                    class="w-full pl-12 pr-12 py-3.5 rounded-xl border-2 border-gray-100 bg-gray-50/50 text-[13px] text-spice-dark placeholder-gray-300 focus:border-spice-green-600 focus:bg-white focus:ring-4 focus:ring-spice-green-600/10 outline-none transition-all"
                                    id="passwordInput">
                             <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors">

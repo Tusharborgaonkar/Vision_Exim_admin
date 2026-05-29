@@ -154,7 +154,7 @@ include '../../includes/navbar.php';
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
                 <div class="flex items-center gap-2 text-[12px] text-gray-400 dark:text-slate-500 mb-1">
-                    <a href="/vision_exim/admin/dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
+                    <a href="../../dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
                     <span>/</span>
                     <a href="list.php" class="hover:text-spice-green-600 transition-colors">Categories</a>
                     <span>/</span>
@@ -264,7 +264,7 @@ include '../../includes/navbar.php';
                             <!-- Thumbnail Preview -->
                             <div class="relative rounded-xl overflow-hidden group border border-gray-100 dark:border-slate-700 mb-3" id="imagePreviewContainer">
                                 <?php if (!empty($old_image) && file_exists('../../../' . $old_image)): ?>
-                                <img src="/vision_exim/<?= htmlspecialchars($old_image) ?>" alt="" id="imgPreview" class="w-full h-32 object-cover">
+                                <img src="../../../<?= htmlspecialchars($old_image) ?>" alt="" id="imgPreview" class="w-full h-32 object-cover">
                                 <?php else: ?>
                                 <div class="w-full h-28 bg-spice-turmeric-100 dark:bg-slate-700 flex items-center justify-center" id="fallbackIcon">
                                     <i class="fas fa-pepper-hot text-4xl text-spice-turmeric-500"></i>

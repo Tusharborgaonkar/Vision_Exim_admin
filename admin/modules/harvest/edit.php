@@ -135,7 +135,7 @@ include '../../includes/navbar.php';
 
         <div class="mb-8">
             <div class="flex items-center gap-2 text-[12px] text-gray-400 dark:text-slate-500 mb-1">
-                <a href="/vision_exim/admin/dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
+                <a href="../../dashboard.php" class="hover:text-spice-green-600 transition-colors">Dashboard</a>
                 <span>/</span>
                 <a href="list.php" class="hover:text-spice-green-600 transition-colors">Harvest Chart</a>
                 <span>/</span>
@@ -191,7 +191,7 @@ include '../../includes/navbar.php';
 
                         <!-- Image Preview -->
                         <img id="imgPreview" 
-                             src="<?= $has_image ? '/vision_exim/' . htmlspecialchars($crop['image']) : '' ?>" 
+                             src="<?= $has_image ? '../../../' . htmlspecialchars($crop['image']) : '' ?>" 
                              class="w-24 h-24 rounded-xl object-cover border-2 border-gray-200 dark:border-slate-600 <?= $has_image ? '' : 'hidden' ?>">
 
                         <!-- Remove Action Button -->
