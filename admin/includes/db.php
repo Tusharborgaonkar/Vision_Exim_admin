@@ -14,6 +14,7 @@ try {
     // Create connection
     $conn = new mysqli(VE_DB_HOST, VE_DB_USER, VE_DB_PASS, VE_DB_NAME);
 } catch (Exception $e) {
+    error_log("Database Connection Error: " . $e->getMessage());
     die('<div style="font-family:sans-serif;padding:40px;text-align:center;">
             <h2 style="color:#B9412E;">Database Connection Failed</h2>
             <p style="color:#666;">A database error occurred. Please try again later or contact support.</p>
