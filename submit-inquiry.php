@@ -85,7 +85,8 @@ $field_list   = implode(', ', $fields);
 $stmt = $conn->prepare("INSERT INTO inquiries ($field_list) VALUES ($placeholders)");
 
 if (!$stmt) {
-    $response['message'] = 'Server error: ' . $conn->error;
+    error_log('Inquiry Insert Error: ' . $conn->error);
+    $response['message'] = 'An error occurred while submitting your inquiry. Please try again later.';
     echo json_encode($response);
     exit;
 }
@@ -96,7 +97,8 @@ if ($stmt->execute()) {
     $response['success'] = true;
     $response['message'] = 'Thank you! Your enquiry has been received. We will get back to you shortly.';
 } else {
-    $response['message'] = 'Failed to submit: ' . $stmt->error;
+    error_log('Inquiry Execute Error: ' . $stmt->error);
+    $response['message'] = 'An error occurred while submitting your inquiry. Please try again later.';
 }
 
 $stmt->close();

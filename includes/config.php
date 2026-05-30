@@ -8,6 +8,19 @@ declare(strict_types=1);
  * both when installed at domain root ("/") and in a subfolder (e.g. "/vision_exim").
  */
 
+/* =========================================================================
+ * 1. DATABASE CONFIGURATION
+ * ========================================================================= */
+define('VE_DB_HOST', 'localhost');
+define('VE_DB_NAME', 'vision_exim');
+define('VE_DB_USER', 'root');
+define('VE_DB_PASS', '');
+
+
+
+/* =========================================================================
+ * 2. URL HELPERS
+ * ========================================================================= */
 if (!function_exists('ve_base_url')) {
     function ve_base_url(): string
     {

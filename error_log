@@ -1,0 +1,24 @@
+[29-May-2026 12:51:40 UTC] Database Connection Error: Access denied for user '	
+a1676fyx_visionexim_usr'@'localhost' (using password: YES)
+[29-May-2026 12:56:08 UTC] Database Connection Error: Access denied for user '	
+a1676fyx_visionexim_usr'@'localhost' (using password: YES)
+[29-May-2026 13:02:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IF NOT EXISTS image VARCHAR(255) DEFAULT NULL' at line 1 in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php:170
+Stack trace:
+#0 /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php(170): mysqli->query('ALTER TABLE har...')
+#1 {main}
+  thrown in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php on line 170
+[29-May-2026 13:02:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IF NOT EXISTS image VARCHAR(255) DEFAULT NULL' at line 1 in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php:170
+Stack trace:
+#0 /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php(170): mysqli->query('ALTER TABLE har...')
+#1 {main}
+  thrown in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php on line 170
+[29-May-2026 13:03:04 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IF NOT EXISTS image VARCHAR(255) DEFAULT NULL' at line 1 in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php:170
+Stack trace:
+#0 /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php(170): mysqli->query('ALTER TABLE har...')
+#1 {main}
+  thrown in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php on line 170
+[29-May-2026 13:08:40 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IF NOT EXISTS image VARCHAR(255) DEFAULT NULL' at line 1 in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php:170
+Stack trace:
+#0 /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php(170): mysqli->query('ALTER TABLE har...')
+#1 {main}
+  thrown in /home4/a1676fyx/public_html/vision-ui/vision_exim/harvest-chart.php on line 170
