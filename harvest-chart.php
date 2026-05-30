@@ -167,7 +167,10 @@
 					<?php
 				// Dynamic: fetch from database
 				require_once 'admin/includes/db.php';
-				$conn->query("ALTER TABLE harvest_calendar ADD COLUMN IF NOT EXISTS image VARCHAR(255) DEFAULT NULL");
+				$check = $conn->query("SHOW COLUMNS FROM harvest_calendar LIKE 'image'");
+				if ($check && $check->num_rows == 0) {
+				    $conn->query("ALTER TABLE harvest_calendar ADD COLUMN image VARCHAR(255) DEFAULT NULL");
+				}
 				$month_cols = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec_month'];
 				$harvest_result = $conn->query("SELECT * FROM harvest_calendar ORDER BY sort_order ASC, spice_name ASC");
 				
