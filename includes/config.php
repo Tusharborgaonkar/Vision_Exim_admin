@@ -12,7 +12,7 @@ declare(strict_types=1);
  * 1. DATABASE CONFIGURATION
  * ========================================================================= */
 define('VE_DB_HOST', 'localhost');
-define('VE_DB_NAME', 'vision_exim');
+define('VE_DB_NAME', 'a1676fyx_visionexim_db');
 define('VE_DB_USER', 'root');
 define('VE_DB_PASS', '');
 
