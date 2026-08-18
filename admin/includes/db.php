@@ -12,7 +12,7 @@ mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ERROR);
 
 try {
     // Create connection
-    $conn = new mysqli(VE_DB_HOST, VE_DB_USER, VE_DB_PASS, VE_DB_NAME);
+    $conn = new mysqli(VE_DB_HOST, VE_DB_USER, VE_DB_PASS, VE_DB_NAME, defined('VE_DB_PORT') ? VE_DB_PORT : 3306);
 } catch (Exception $e) {
     error_log("Database Connection Error: " . $e->getMessage());
     die('<div style="font-family:sans-serif;padding:40px;text-align:center;">

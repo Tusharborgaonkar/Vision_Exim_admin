@@ -11,8 +11,9 @@ declare(strict_types=1);
 /* =========================================================================
  * 1. DATABASE CONFIGURATION
  * ========================================================================= */
-define('VE_DB_HOST', 'localhost');
-define('VE_DB_NAME', 'a1676fyx_visionexim_db');
+define('VE_DB_HOST', '127.0.0.1');
+define('VE_DB_PORT', 3307);
+define('VE_DB_NAME', 'visioneximfinal');
 define('VE_DB_USER', 'root');
 define('VE_DB_PASS', '');
 

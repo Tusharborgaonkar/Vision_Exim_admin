@@ -308,6 +308,7 @@ include 'includes/header.php';
                         <div>
                             <div class="ci-item-label">E-mail</div>
                             <div class="ci-item-val">
+                                <a href="mailto:export@visionexims.com">export@visionexims.com</a><br>
                                 <a href="mailto:info@visionexims.com">info@visionexims.com</a><br>
                                 <a href="mailto:visionexims@gmail.com">visionexims@gmail.com</a>
                             </div>
@@ -338,7 +339,7 @@ include 'includes/header.php';
 
                 <ul class="contact-quick-links">
                     <li><a href="tel:+919998400058" class="btn">Call Now</a></li>
-                    <li><a href="mailto:info@visionexims.com" class="btn">Email Us</a></li>
+                    <li><a href="mailto:export@visionexims.com" class="btn">Email Us</a></li>
                 </ul>
             </div>
 

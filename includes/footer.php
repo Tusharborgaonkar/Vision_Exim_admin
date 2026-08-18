@@ -107,6 +107,19 @@
 									✉
 								</div>
 
+								<a href="mailto:export@visionexims.com">
+									export@visionexims.com
+								</a>
+
+							</li>
+
+							<!-- General Info -->
+							<li>
+
+								<div class="icon">
+									✉
+								</div>
+
 								<a href="mailto:info@visionexims.com">
 									info@visionexims.com
 								</a>

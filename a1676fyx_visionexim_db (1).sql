@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_users`
 --
 
-CREATE TABLE `admin_users` (
+CREATE TABLE IF NOT EXISTS `admin_users` (
   `id` int(11) NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `admin_users` (
 -- Dumping data for table `admin_users`
 --
 
-INSERT INTO `admin_users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VALUES
+INSERT IGNORE INTO `admin_users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VALUES
 (1, 'Vision Exim Admin', 'admin@visionexim.com', '$2y$10$UkQDlDXbTz8OebwjzUHUuu9KYfisov/Tj/kCgZzjTwQdfpPl7x9Ny', 'admin', '2026-05-26 10:15:34'),
 (2, 'Admin', 'admin@king.com', '$2y$10$Kx0AZ/9du6pXBCOZ5BL4UeLncZOfZ2rZ5gTIrfJJfKB55X5Rk2Iue', 'admin', '2026-05-30 07:06:07');
 
@@ -50,7 +50,7 @@ INSERT INTO `admin_users` (`id`, `name`, `email`, `password`, `role`, `created_a
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `slug`, `parent_id`, `description`, `status`, `sort_order`, `image`, `created_at`, `updated_at`) VALUES
+INSERT IGNORE INTO `categories` (`id`, `name`, `slug`, `parent_id`, `description`, `status`, `sort_order`, `image`, `created_at`, `updated_at`) VALUES
 (1, 'Spices', 'spices', NULL, 'Premium quality whole and ground Indian spices, processed to retain their natural aroma, color, and intense flavor.', 'active', 1, NULL, '2026-05-28 11:31:14', '2026-06-24 07:08:49'),
 (2, 'Pulses', 'pulses', NULL, 'Nutritious, high-protein pulses and lentils sourced from premium farms, cleaned and graded for export markets.', 'active', 2, NULL, '2026-05-28 11:31:14', '2026-05-28 11:31:14'),
 (4, 'Rice', 'rice', NULL, 'Premium aromatic Basmati and long-grain non-Basmati rice, aged to perfection and milled with advanced technology.', 'active', 4, NULL, '2026-05-28 11:31:14', '2026-05-28 11:31:14'),
@@ -82,7 +82,7 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `parent_id`, `description`, `sta
 -- Table structure for table `harvest_calendar`
 --
 
-CREATE TABLE `harvest_calendar` (
+CREATE TABLE IF NOT EXISTS `harvest_calendar` (
   `id` int(11) NOT NULL,
   `spice_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jan` tinyint(1) NOT NULL DEFAULT '0',
@@ -108,7 +108,7 @@ CREATE TABLE `harvest_calendar` (
 -- Dumping data for table `harvest_calendar`
 --
 
-INSERT INTO `harvest_calendar` (`id`, `spice_name`, `jan`, `feb`, `mar`, `apr`, `may`, `jun`, `jul`, `aug`, `sep`, `oct`, `nov`, `dec_month`, `sort_order`, `created_at`, `updated_at`, `product_id`, `image`) VALUES
+INSERT IGNORE INTO `harvest_calendar` (`id`, `spice_name`, `jan`, `feb`, `mar`, `apr`, `may`, `jun`, `jul`, `aug`, `sep`, `oct`, `nov`, `dec_month`, `sort_order`, `created_at`, `updated_at`, `product_id`, `image`) VALUES
 (1, 'Black Pepper', 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, '2026-05-26 10:15:54', '2026-06-24 06:58:47', NULL, NULL),
 (2, 'Cardamom', 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 2, '2026-05-26 10:15:54', '2026-05-30 12:40:48', NULL, 'upload/products/harvest_6a1adacff36f3.webp'),
 (3, 'Chillies', 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3, '2026-05-26 10:15:54', '2026-05-26 10:15:54', NULL, NULL),
@@ -127,7 +127,7 @@ INSERT INTO `harvest_calendar` (`id`, `spice_name`, `jan`, `feb`, `mar`, `apr`, 
 -- Table structure for table `inquiries`
 --
 
-CREATE TABLE `inquiries` (
+CREATE TABLE IF NOT EXISTS `inquiries` (
   `id` int(11) NOT NULL,
   `company_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contact_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -150,7 +150,7 @@ CREATE TABLE `inquiries` (
 -- Dumping data for table `inquiries`
 --
 
-INSERT INTO `inquiries` (`id`, `company_name`, `contact_name`, `email`, `phone`, `country_flag`, `country_name`, `city`, `requested_product`, `quantity`, `message`, `source`, `status`, `internal_notes`, `created_at`, `updated_at`) VALUES
+INSERT IGNORE INTO `inquiries` (`id`, `company_name`, `contact_name`, `email`, `phone`, `country_flag`, `country_name`, `city`, `requested_product`, `quantity`, `message`, `source`, `status`, `internal_notes`, `created_at`, `updated_at`) VALUES
 (1, 'Ahmed Trading Co.', 'Ahmed Al-Mansoori', 'ahmed@trading.ae', '+971 50 123 4567', '🇦🇪', 'UAE', 'Deira, Dubai', 'Turmeric Powder', '500 KG', 'Dear Vision Exim Team, we are interested in importing organic Salem Turmeric Powder with minimum 4.5% curcumin content. Please quote your best FOB Mundra Port price for a 500 KG trial shipment. Also, let us know about the packaging options available. Thank you.', 'website', 'closed', 'Buyer wants to pay 30% advance and 70% against BL scan. Curcumin content report must be shared before container loading.', '2026-05-26 10:15:34', '2026-05-26 10:46:20'),
 (2, 'Global Foods Inc.', 'Johnathan Smith', 'procurement@globalfoods.com', '+1 212 987 6543', '🇺🇸', 'USA', 'New York', 'Red Chili Powder', '1 Ton', 'We require 1 Ton of high heat Guntur Red Chili Powder (Teja quality, stemless) for spice blending in the US. Please provide CIF New York port pricing and specify if certificate of analysis is provided with each batch.', 'whatsapp', 'progress', 'Requested Teja chili specs. Looking to close pricing next week.', '2026-05-26 10:15:34', '2026-05-26 10:15:34'),
 (3, 'Spice Paradise LLC', 'Elena Rostova', 'info@spiceparadise.co.uk', '+44 20 7946 0958', '🇬🇧', 'UK', 'London', 'Cumin Seeds', '2 Tons', 'Hello, could you please quote machine cleaned cumin seeds Singapore Quality 99% purity. We need 2 Tons trial shipment shipped to London Gateway Port. Please share your product catalog too.', 'email', 'replied', 'Quotation sent via email. Volatile oil specification shared.', '2026-05-26 10:15:34', '2026-05-26 10:15:34'),
@@ -166,7 +166,7 @@ INSERT INTO `inquiries` (`id`, `company_name`, `contact_name`, `email`, `phone`,
 -- Table structure for table `products`
 --
 
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL,
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -194,7 +194,7 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `slug`, `category_id`, `hs_code`, `short_description`, `full_description`, `moq`, `packaging`, `quality_standard`, `origin_state`, `origin_country`, `image`, `gallery_images`, `status`, `sort_order`, `is_featured`, `seo_title`, `seo_description`, `created_at`, `updated_at`) VALUES
+INSERT IGNORE INTO `products` (`id`, `name`, `slug`, `category_id`, `hs_code`, `short_description`, `full_description`, `moq`, `packaging`, `quality_standard`, `origin_state`, `origin_country`, `image`, `gallery_images`, `status`, `sort_order`, `is_featured`, `seo_title`, `seo_description`, `created_at`, `updated_at`) VALUES
 (1, 'Turmeric Powder', 'turmeric-powder', 1, '09103020', 'Premium high-curcumin turmeric powder with vibrant golden-yellow color and rich earthy flavor.', 'Our Turmeric Powder is sourced from the finest turmeric finger harvesting regions of India. It has high curcumin content, offering excellent natural color, aroma, and health properties. It is processed under strict quality control to guarantee purity and zero adulteration.', '99.5% Purity', '25kg / 50kg PP Bags or Paper Bags', 'Grade A', 'Maharashtra & Andhra Pradesh', 'India', 'upload/products/prod_6a3b81b11cde6.jpeg', NULL, 'active', 0, 1, '', '', '2026-05-28 11:31:14', '2026-06-24 07:05:21'),
 (2, 'Cumin Seeds', 'cumin-seeds', 1, '09093120', 'Authentic, sortex-cleaned cumin seeds with strong warm aroma and rich flavor profile.', 'Highly aromatic Indian Cumin Seeds (Jeera), sortex-cleaned to remove impurities. Known for its intense aroma, warm flavor, and therapeutic properties, ideal for culinary uses globally.', '99% Pure', '25kg PP Bags', 'Singapore Quality (99%)', 'Gujarat & Rajasthan', 'India', 'upload/products/prod_6a3b8128a772e.jpg', NULL, 'active', 0, 1, '', '', '2026-05-28 11:31:14', '2026-06-24 07:03:04'),
 (3, 'Green Mung Beans', 'green-mung-beans', 2, '07133100', 'Export-grade whole green mung beans, highly nutritious and uniform in size.', 'Our Green Mung Beans are meticulously cleaned, machine-polished, and color sortex-sorted. Rich in protein, dietary fiber, and essential minerals. Perfect for cooking and sprouting.', '98.5% Purity', '25kg / 50kg Bags', 'Premium Export Quality', 'Madhya Pradesh & Maharashtra', 'India', '', NULL, 'active', 0, 1, NULL, NULL, '2026-05-28 11:31:14', '2026-05-28 11:31:14'),
