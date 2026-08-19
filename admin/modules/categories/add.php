@@ -60,6 +60,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $check->close();
     }
 
+    // Validate parent category selection
+    if (empty($errors)) {
+        $parent_val = ($parent_id === 'none' || empty($parent_id)) ? null : (int)$parent_id;
+        if ($parent_val !== null) {
+            $chk_p = $conn->prepare("SELECT parent_id FROM categories WHERE id = ?");
+            $chk_p->bind_param('i', $parent_val);
+            $chk_p->execute();
+            $res_p = $chk_p->get_result()->fetch_assoc();
+            if (!$res_p) {
+                $errors[] = 'The selected parent category does not exist.';
+            } elseif ($res_p['parent_id'] !== null) {
+                $errors[] = 'The selected parent category is itself a subcategory. Multi-level nesting is not supported.';
+            }
+            $chk_p->close();
+        }
+    }
+
     // Process Image Upload
     $image_path = null;
     if (empty($errors) && isset($_FILES['category_image']) && $_FILES['category_image']['error'] !== UPLOAD_ERR_NO_FILE) {

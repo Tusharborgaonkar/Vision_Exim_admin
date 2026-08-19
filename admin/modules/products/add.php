@@ -27,10 +27,46 @@ $old_seo_desc = '';
 
 // Fetch active categories
 $categories = [];
-$res = $conn->query("SELECT id, name FROM categories WHERE status = 'active' ORDER BY name ASC");
+$res = $conn->query("SELECT id, name, parent_id FROM categories WHERE status = 'active' ORDER BY sort_order ASC, name ASC");
 if ($res) {
+    $temp_cats = [];
     while ($row = $res->fetch_assoc()) {
-        $categories[] = $row;
+        $temp_cats[] = $row;
+    }
+    
+    $parents = [];
+    $children = [];
+    foreach ($temp_cats as $c) {
+        if ($c['parent_id'] === null) {
+            $parents[$c['id']] = $c;
+            $parents[$c['id']]['children'] = [];
+        } else {
+            $children[] = $c;
+        }
+    }
+    
+    foreach ($children as $child) {
+        if (isset($parents[$child['parent_id']])) {
+            $parents[$child['parent_id']]['children'][] = $child;
+        } else {
+            $parents[$child['id']] = $child;
+            $parents[$child['id']]['children'] = [];
+        }
+    }
+    
+    foreach ($parents as $p) {
+        $categories[] = [
+            'id' => $p['id'],
+            'name' => $p['name']
+        ];
+        if (!empty($p['children'])) {
+            foreach ($p['children'] as $child) {
+                $categories[] = [
+                    'id' => $child['id'],
+                    'name' => '— ' . $child['name']
+                ];
+            }
+        }
     }
 }
 

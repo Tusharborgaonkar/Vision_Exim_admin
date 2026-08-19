@@ -35,13 +35,32 @@ $current_page = basename($_SERVER['PHP_SELF']);
 						<ul class="sub-menu">
 							<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php')) ?>">All Products</a></li>
 							<?php
-							$nav_categories = ve_get_all_categories();
+							$nav_categories = ve_get_parent_categories();
 							if (!empty($nav_categories)) {
 								foreach ($nav_categories as $cat) {
 									$cat_url = ve_url('pure-ground-spices.php?category=' . urlencode($cat['slug']));
-									?>
-									<li><a href="<?= htmlspecialchars($cat_url) ?>"><?= htmlspecialchars($cat['name']) ?></a></li>
-									<?php
+									$subs = ve_get_subcategories((int)$cat['id']);
+									if (!empty($subs)) {
+										?>
+										<li class="dropdown">
+											<a href="<?= htmlspecialchars($cat_url) ?>"><?= htmlspecialchars($cat['name']) ?>
+												<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M1 1.5L4 4.5L7 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+												</svg>
+											</a>
+											<span class="sub-menu-toggle"></span>
+											<ul class="sub-menu">
+												<?php foreach ($subs as $sub): ?>
+													<li><a href="<?= htmlspecialchars(ve_url('pure-ground-spices.php?category=' . urlencode($sub['slug']))) ?>"><?= htmlspecialchars($sub['name']) ?></a></li>
+												<?php endforeach; ?>
+											</ul>
+										</li>
+										<?php
+									} else {
+										?>
+										<li><a href="<?= htmlspecialchars($cat_url) ?>"><?= htmlspecialchars($cat['name']) ?></a></li>
+										<?php
+									}
 								}
 							}
 							?>

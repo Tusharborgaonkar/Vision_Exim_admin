@@ -91,6 +91,38 @@ function ve_get_all_categories(): array
 }
 
 /** @return array<int, array<string, mixed>> */
+function ve_get_parent_categories(): array
+{
+    $conn = ve_db();
+    $categories = [];
+    $result = $conn->query("SELECT id, name, slug, image, description FROM categories WHERE status = 'active' AND parent_id IS NULL ORDER BY sort_order ASC, name ASC");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row;
+        }
+    }
+    return $categories;
+}
+
+/** @return array<int, array<string, mixed>> */
+function ve_get_subcategories(int $parent_id): array
+{
+    $conn = ve_db();
+    $categories = [];
+    $stmt = $conn->prepare("SELECT id, name, slug, image, description FROM categories WHERE status = 'active' AND parent_id = ? ORDER BY sort_order ASC, name ASC");
+    if ($stmt) {
+        $stmt->bind_param('i', $parent_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row;
+        }
+        $stmt->close();
+    }
+    return $categories;
+}
+
+/** @return array<int, array<string, mixed>> */
 function ve_get_products_by_category(int $category_id, int $limit = 3, int $exclude_id = 0): array
 {
     $conn = ve_db();

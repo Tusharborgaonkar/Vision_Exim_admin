@@ -81,6 +81,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $check->close();
     }
 
+    // Validate parent category selection and prevent circular/nested relationships
+    if (empty($errors)) {
+        $parent_val = ($parent_id === 'none' || empty($parent_id)) ? null : (int)$parent_id;
+        if ($parent_val !== null) {
+            if ($parent_val === $id) {
+                $errors[] = 'A category cannot be selected as its own parent.';
+            } else {
+                $chk_p = $conn->prepare("SELECT parent_id FROM categories WHERE id = ?");
+                $chk_p->bind_param('i', $parent_val);
+                $chk_p->execute();
+                $res_p = $chk_p->get_result()->fetch_assoc();
+                if (!$res_p) {
+                    $errors[] = 'The selected parent category does not exist.';
+                } elseif ($res_p['parent_id'] !== null) {
+                    $errors[] = 'The selected parent category is itself a subcategory. Multi-level nesting is not supported.';
+                }
+                $chk_p->close();
+
+                if (empty($errors)) {
+                    $chk_c = $conn->prepare("SELECT COUNT(*) as cnt FROM categories WHERE parent_id = ?");
+                    $chk_c->bind_param('i', $id);
+                    $chk_c->execute();
+                    $res_c = $chk_c->get_result()->fetch_assoc();
+                    if ((int)$res_c['cnt'] > 0) {
+                        $errors[] = 'This category has subcategories of its own and cannot be made a subcategory (it must remain a top-level category).';
+                    }
+                    $chk_c->close();
+                }
+            }
+        }
+    }
+
     // Process Image Upload
     $image_path = $old_image;
     if (empty($errors) && isset($_FILES['category_image']) && $_FILES['category_image']['error'] !== UPLOAD_ERR_NO_FILE) {

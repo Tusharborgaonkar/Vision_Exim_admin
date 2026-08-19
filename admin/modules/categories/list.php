@@ -56,6 +56,38 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// Process into hierarchical order
+$all_cats = [];
+foreach ($categories_data as $cat) {
+    $all_cats[$cat['id']] = $cat;
+}
+
+$hierarchical_categories = [];
+foreach ($all_cats as $cat) {
+    if ($cat['parent_id'] === null) {
+        $cat['level'] = 0;
+        $hierarchical_categories[] = $cat;
+        
+        // Find subcategories of this parent
+        foreach ($all_cats as $sub) {
+            if ($sub['parent_id'] == $cat['id']) {
+                $sub['level'] = 1;
+                $hierarchical_categories[] = $sub;
+            }
+        }
+    }
+}
+
+// Add orphan subcategories whose parent doesn't exist in the filtered set
+foreach ($all_cats as $cat) {
+    if ($cat['parent_id'] !== null && !isset($all_cats[$cat['parent_id']])) {
+        $cat['level'] = 0; // Display as root
+        $hierarchical_categories[] = $cat;
+    }
+}
+
+$categories_data = $hierarchical_categories;
+
 include '../../includes/header.php'; 
 include '../../includes/sidebar.php'; 
 include '../../includes/navbar.php'; 
@@ -179,7 +211,10 @@ include '../../includes/navbar.php';
                         ?>
                         <tr class="hover:bg-gray-50/60 dark:hover:bg-slate-700/30 transition-colors" id="row-<?= $row['id'] ?>">
                             <td class="px-5 py-4 ps-6">
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-3 <?= isset($row['level']) && $row['level'] > 0 ? 'pl-8' : '' ?>">
+                                    <?php if (isset($row['level']) && $row['level'] > 0): ?>
+                                    <span class="text-gray-400 dark:text-slate-500 font-mono text-[13px] flex-shrink-0">├──</span>
+                                    <?php endif; ?>
                                     <?php if (!empty($row['image']) && file_exists('../../../' . $row['image'])): ?>
                                     <img src="../../../<?= htmlspecialchars($row['image']) ?>" alt="" class="w-10 h-10 rounded-lg object-cover flex-shrink-0">
                                     <?php else: ?>

@@ -1,7 +1,7 @@
 <?php
 $page_title = "Categories - Vision Exim";
 require_once 'includes/product-functions.php';
-$categories = ve_get_all_categories();
+$categories = ve_get_parent_categories();
 include 'includes/header.php';
 include 'includes/navbar.php';
 ?>
@@ -47,6 +47,18 @@ include 'includes/navbar.php';
                                     <h2><?= htmlspecialchars($cat['name']) ?></h2>
                                     <?php if (!empty($cat['description'])): ?>
                                         <p data-aos="fade-up"><?= htmlspecialchars($cat['description']) ?></p>
+                                    <?php endif; ?>
+                                    
+                                    <?php
+                                    $subs = ve_get_subcategories((int)$cat['id']);
+                                    if (!empty($subs)): ?>
+                                        <div class="subcategory-links mb-4" data-aos="fade-up" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                                            <?php foreach ($subs as $sub): ?>
+                                                <a href="<?= ve_url('pure-ground-spices.php?category=' . urlencode($sub['slug'])) ?>" class="sub-link" style="font-size: 14px; font-weight: 600; color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; transition: color 0.3s;">
+                                                    <span style="margin-right: 6px;">&rarr;</span><?= htmlspecialchars($sub['name']) ?>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        </div>
                                     <?php endif; ?>
                                     <div data-aos="fade-up">
                                         <a href="<?= $cat_link ?>" class="btn">VIEW PRODUCTS

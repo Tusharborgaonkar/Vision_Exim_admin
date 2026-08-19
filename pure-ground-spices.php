@@ -21,8 +21,8 @@ $page_title = $category ? htmlspecialchars($category['name']) . " | Vision Exim"
 // Fetch products — filtered by category if provided
 $products = [];
 if ($category) {
-    $stmt = $conn->prepare("SELECT id, name, slug, image FROM products WHERE status = 'active' AND category_id = ? ORDER BY sort_order ASC, name ASC");
-    $stmt->bind_param('i', $category['id']);
+    $stmt = $conn->prepare("SELECT id, name, slug, image FROM products WHERE status = 'active' AND (category_id = ? OR category_id IN (SELECT id FROM categories WHERE parent_id = ?)) ORDER BY sort_order ASC, name ASC");
+    $stmt->bind_param('ii', $category['id'], $category['id']);
     $stmt->execute();
     $res = $stmt->get_result();
     while ($row = $res->fetch_assoc()) $products[] = $row;

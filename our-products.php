@@ -11,7 +11,7 @@ $res = $conn->query("
            COUNT(p.id) as product_count
     FROM categories c
     LEFT JOIN products p ON p.category_id = c.id AND p.status = 'active'
-    WHERE c.status = 'active'
+    WHERE c.status = 'active' AND c.parent_id IS NULL
     GROUP BY c.id
     ORDER BY c.sort_order ASC, c.name ASC
 ");
@@ -66,6 +66,18 @@ include 'includes/navbar.php';
                         <div class="product-box-text">
                             <h2><?= htmlspecialchars($cat['name']) ?></h2>
                             <p data-aos="fade-up"><?= htmlspecialchars(!empty($cat['description']) ? $cat['description'] : 'Premium quality ' . $cat['name'] . ' sourced directly from trusted Indian farms, processed to meet international export standards.') ?></p>
+                            
+                            <?php
+                            $subs = ve_get_subcategories((int)$cat['id']);
+                            if (!empty($subs)): ?>
+                                <div class="subcategory-links mb-4" data-aos="fade-up" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                                    <?php foreach ($subs as $sub): ?>
+                                        <a href="<?= ve_url('pure-ground-spices.php?category=' . urlencode($sub['slug'])) ?>" class="sub-link" style="font-size: 14px; font-weight: 600; color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; transition: color 0.3s;">
+                                            <span style="margin-right: 6px;">&rarr;</span><?= htmlspecialchars($sub['name']) ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
                             <div data-aos="fade-up">
                                 <a href="<?= $cat_url ?>" class="btn">VIEW PRODUCTS
                                     <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
